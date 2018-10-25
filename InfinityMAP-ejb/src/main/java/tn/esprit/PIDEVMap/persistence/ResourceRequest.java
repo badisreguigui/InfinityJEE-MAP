@@ -45,6 +45,8 @@ public class ResourceRequest implements Serializable {
 	@JsonProperty("Director")
 	private String Director;
 	
+	private String TestEntity;
+	
 	@JsonProperty("listMandats")
 	@OneToMany(mappedBy="request")
 	private List<Mandate> listMandats;
