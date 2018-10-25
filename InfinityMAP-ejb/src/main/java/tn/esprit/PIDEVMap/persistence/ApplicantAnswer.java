@@ -18,6 +18,18 @@ public class ApplicantAnswer {
 	@ManyToOne
 	private Question question;
 	
+	public Applicant getApplicant() {
+		return applicant;
+	}
+	public void setApplicant(Applicant applicant) {
+		this.applicant = applicant;
+	}
+	public Question getQuestion() {
+		return question;
+	}
+	public void setQuestion(Question question) {
+		this.question = question;
+	}
 	public int getId() {
 		return id;
 	}

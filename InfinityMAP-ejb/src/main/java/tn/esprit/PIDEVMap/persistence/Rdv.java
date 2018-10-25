@@ -5,8 +5,6 @@ import java.util.List;
 import javax.persistence.*;
 import java.util.Date;
 
-enum RdvState{Accepted, Unaccepted, Delayed}
-
 @Entity
 public class Rdv {
 	@Id

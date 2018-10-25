@@ -20,6 +20,12 @@ public class ApplicantFile {
 	public void setId(int id) {
 		this.id = id;
 	}
+	public Applicant getApplicant() {
+		return applicant;
+	}
+	public void setApplicant(Applicant applicant) {
+		this.applicant = applicant;
+	}
 	public float getTestResult() {
 		return testResult;
 	}

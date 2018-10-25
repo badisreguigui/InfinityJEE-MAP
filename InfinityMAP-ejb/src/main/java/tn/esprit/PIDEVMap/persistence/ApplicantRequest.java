@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 import java.util.Date;
 
-enum Requeststate{inProcess,denied,waiting}
+//public enum Requeststate{inProcess,denied,waiting}
 @Entity
 public class ApplicantRequest {
 	@Id

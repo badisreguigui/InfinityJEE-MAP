@@ -19,6 +19,48 @@ public class Applicant extends Resource implements Serializable{
 	@ManyToMany
 	List<Test>tests; 
 	
+	public List<ApplicantAnswer> getAnswers() {
+		return answers;
+	}
+	public void setAnswers(List<ApplicantAnswer> answers) {
+		this.answers = answers;
+	}
+	public List<Test> getTests() {
+		return tests;
+	}
+	public void setTests(List<Test> tests) {
+		this.tests = tests;
+	}
+	public ApplicantRequest getApplicantRequest() {
+		return applicantRequest;
+	}
+	public void setApplicantRequest(ApplicantRequest applicantRequest) {
+		this.applicantRequest = applicantRequest;
+	}
+	public ApplicantFile getApplicantFile() {
+		return applicantFile;
+	}
+	public void setApplicantFile(ApplicantFile applicantFile) {
+		this.applicantFile = applicantFile;
+	}
+	public Arrival getArrival() {
+		return arrival;
+	}
+	public void setArrival(Arrival arrival) {
+		this.arrival = arrival;
+	}
+	public List<Rdv> getRdvs() {
+		return rdvs;
+	}
+	public void setRdvs(List<Rdv> rdvs) {
+		this.rdvs = rdvs;
+	}
+	public List<Question> getQuestions() {
+		return questions;
+	}
+	public void setQuestions(List<Question> questions) {
+		this.questions = questions;
+	}
 	@OneToOne(mappedBy="applicant")
 	private ApplicantRequest applicantRequest;
 	
