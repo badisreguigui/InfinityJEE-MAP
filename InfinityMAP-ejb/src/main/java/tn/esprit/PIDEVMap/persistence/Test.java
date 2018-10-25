@@ -3,12 +3,11 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
 
-enum Category{Technique,Français}
 @Entity
 public class Test {
 	@Id
 	private int id; 
-	private Category category;
+	private CategoryTest category;
 	
 	@OneToMany(mappedBy="test")
 	List<Question> questions;
@@ -24,12 +23,12 @@ public class Test {
 		this.id = id;
 	}
 
-	public Category getCategory() {
+	public CategoryTest getCategory() {
 		return category;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setCategory(CategoryTest categoryTest) {
+		this.category = categoryTest;
 	}
 
 	public List<Question> getQuestions() {
