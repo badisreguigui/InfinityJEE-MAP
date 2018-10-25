@@ -36,7 +36,7 @@ public class Resource implements Serializable {
 	protected State state;
 	
 	protected String region;
-	protected float Rating;
+	protected float rating;
 	
 	
 	@ManyToMany
@@ -60,8 +60,14 @@ public class Resource implements Serializable {
 	
 	
 
+	
+
+
+
+
 	public Resource(String lastname, String firstname, String picture, String seniority, String sector, String profil,
-			ContractType contractype, State state) {
+			ContractType contractype, State state, String region, float rating, List<Skills> listSkills,
+			List<Projet> listProjets, List<Mandate> listMandats, List<Vacation> listVacations) {
 		super();
 		this.lastname = lastname;
 		this.firstname = firstname;
@@ -71,7 +77,18 @@ public class Resource implements Serializable {
 		this.profil = profil;
 		this.contractype = contractype;
 		this.state = state;
+		this.region = region;
+		this.rating = rating;
+		this.listSkills = listSkills;
+		this.listProjets = listProjets;
+		this.listMandats = listMandats;
+		this.listVacations = listVacations;
 	}
+
+
+
+
+
 
 
 
@@ -169,14 +186,14 @@ public class Resource implements Serializable {
 
 
 	public float getRating() {
-		return Rating;
+		return rating;
 	}
 
 
 
 
 	public void setRating(float rating) {
-		Rating = rating;
+		this.rating = rating;
 	}
 
 

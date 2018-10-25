@@ -1,46 +1,59 @@
 package tn.esprit.PIDEVMap.persistence;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class ArchiveResources implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
-	private String lastname;
-	private String firstname;
-	private String picture;
-	private String seniority;
-	private String sector;
-	private String profil;
+	protected int id;
+	protected String lastname;
+	protected String firstname;
+	protected String picture;
+	protected String seniority;
+	protected String sector;
+	protected String profil;
 	@Enumerated
-	private ContractType contractype;
+	protected ContractType contractype;
 	@Enumerated
-	private State state;
+	protected State state;
+	
+	protected String region;
+	protected float rating;
+	
+	
 
+	 
+	
 
 	public ArchiveResources(String lastname, String firstname, String picture, String seniority, String sector,
-			String profil, ContractType contractype, State state) {
-		super();
-		this.lastname = lastname;
-		this.firstname = firstname;
-		this.picture = picture;
-		this.seniority = seniority;
-		this.sector = sector;
-		this.profil = profil;
-		this.contractype = contractype;
-		this.state = state;
-	}
+				String profil, ContractType contractype, State state, String region, float rating) {
+			super();
+			this.lastname = lastname;
+			this.firstname = firstname;
+			this.picture = picture;
+			this.seniority = seniority;
+			this.sector = sector;
+			this.profil = profil;
+			this.contractype = contractype;
+			this.state = state;
+			this.region = region;
+			this.rating = rating;
+
+		}
 	public ArchiveResources() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+			super();
+			// TODO Auto-generated constructor stub
+		}
 	public int getId() {
 		return id;
 	}
@@ -101,5 +114,42 @@ public class ArchiveResources implements Serializable{
 	public void setContractype(ContractType contractype) {
 		this.contractype = contractype;
 	}
+
+
+
+
+
+
+
+
+	public String getRegion() {
+		return region;
+	}
+
+
+
+
+	public void setRegion(String region) {
+		this.region = region;
+	}
+
+
+
+
+	public float getRating() {
+		return rating;
+	}
+
+
+
+
+	public void setRating(float rating) {
+		this.rating = rating;
+	}
+
+
+
+
+	
 	
 }
