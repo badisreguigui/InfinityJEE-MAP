@@ -19,6 +19,21 @@ public class Applicant extends Resource implements Serializable{
 	@ManyToMany
 	List<Test>tests; 
 	
+	@OneToOne(mappedBy="applicant")
+	private ApplicantRequest applicantRequest;
+	
+	@OneToOne(mappedBy="applicant")
+	private ApplicantFile applicantFile;
+	
+	@OneToOne(mappedBy="applicant")
+	private Arrival arrival;
+	
+	@OneToMany(mappedBy="applicant")
+	List<Rdv>rdvs;
+	
+	@ManyToMany(mappedBy="applicants")
+	List<Question>questions;
+	
 	public List<ApplicantAnswer> getAnswers() {
 		return answers;
 	}
@@ -61,20 +76,7 @@ public class Applicant extends Resource implements Serializable{
 	public void setQuestions(List<Question> questions) {
 		this.questions = questions;
 	}
-	@OneToOne(mappedBy="applicant")
-	private ApplicantRequest applicantRequest;
 	
-	@OneToOne(mappedBy="applicant")
-	private ApplicantFile applicantFile;
-	
-	@OneToOne(mappedBy="applicant")
-	private Arrival arrival;
-	
-	@OneToMany(mappedBy="applicant")
-	List<Rdv>rdvs;
-	
-	@ManyToMany(mappedBy="applicants")
-	List<Question>questions;
 		
 	public int getId() {
 		return id;

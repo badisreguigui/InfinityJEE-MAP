@@ -26,7 +26,9 @@ import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.websocket.server.PathParam;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
@@ -53,15 +55,20 @@ public class ApplicantRequestService {
 	@POST
 	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("/sendRequest")
+	@Path("/sendRequest/{id}")
 	public int sendRequet(ApplicantRequest request) {
-		return proxy.sendRequet(request); 
+		 return proxy.sendRequet(request); 
+		 //proxy.affecterRequestAapplicant(appliquantId, requestId);
 		//return 0;
 	}
 
-
-	public void affecterRequestAapplicant(int appliquantId, int requestId) {
-
+	@GET
+	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
+	@Path("/affecterRequest/{applicantId}/{requestId}")
+	public String affecterRequestAapplicant(@PathParam("applicantId") String applicantId, @PathParam("requestId") String requestId) {
+		//proxy.affecterRequestAapplicant(applicantId, requestId);
+		//System.out.println(applicantId); 
+		return "response"+applicantId; 
 	}
 
 
