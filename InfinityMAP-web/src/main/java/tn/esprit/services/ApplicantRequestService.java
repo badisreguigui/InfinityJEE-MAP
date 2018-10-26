@@ -55,7 +55,7 @@ public class ApplicantRequestService {
 	@POST
 	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("/sendRequest/{id}")
+	@Path("/sendRequest")
 	public int sendRequet(ApplicantRequest request) {
 		 return proxy.sendRequet(request); 
 		 //proxy.affecterRequestAapplicant(appliquantId, requestId);
@@ -65,20 +65,30 @@ public class ApplicantRequestService {
 	@GET
 	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
 	@Path("/affecterRequest/{applicantId}/{requestId}")
-	public String affecterRequestAapplicant(@PathParam("applicantId") String applicantId, @PathParam("requestId") String requestId) {
-		//proxy.affecterRequestAapplicant(applicantId, requestId);
+	public String affecterRequestAapplicant(@PathParam("applicantId") int applicantId, @PathParam("requestId") int requestId) {
+		proxy.affecterRequestAapplicant(applicantId, requestId);
 		//System.out.println(applicantId); 
 		return "response"+applicantId; 
 	}
 
 
-	public ApplicantRequest suiviRequest(int requestId) {
-		return null;
+	@POST
+	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/suiviRequest")
+	public Requeststate suiviRequest(int requestId) {
+		return proxy.suiviRequest(requestId); 
 	}
 
-
-	public void CancelRequest(int requestId, int applicantId) {
-		
+	@POST
+	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/cancelRequest")
+	public String CancelRequest(String requestIdapplicantId) {
+		String[] parts = requestIdapplicantId.split("/"); 
+		int requestId = Integer.parseInt(parts[0]); 
+		int applicantId = Integer.parseInt(parts[1]); 
+		return proxy.CancelRequest(requestId, applicantId);
 	}
 
 

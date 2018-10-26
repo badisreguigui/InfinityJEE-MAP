@@ -47,6 +47,7 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 	
 	@Override
 	public int sendRequet(ApplicantRequest request) {
+		request.setDate(new Date());
 		request.setState(Requeststate.waiting);
 		em.persist(request);
 		affecterRequestAapplicant(3, request.getId()); 
@@ -59,18 +60,25 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 	}
 
 	@Override
-	public ApplicantRequest suiviRequest(int requestId) {
+	public Requeststate suiviRequest(int requestId) {
 		ApplicantRequest request = em.find(ApplicantRequest.class, requestId);
-		return request;
+		return request.getState();
 	}
 
 	@Override
-	public void CancelRequest(int requestId, int applicantId) {
+	public String CancelRequest(int requestId, int applicantId) {
 		//verify if applicantId of the owner of the request is the same
 		ApplicantRequest request = em.find(ApplicantRequest.class, requestId);
-		if(request.getApplicant().getId() == applicantId){
-			em.remove(request);
+		if(request != null){
+			if(request.getApplicant().getId() == applicantId){
+				em.remove(request);
+				return "deleted"; 
+			}
+			else{
+				return "you are not the owner of the request"; 
+			}
 		}
+		return "error finding request"; 
 	}
 
 	@Override
