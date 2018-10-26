@@ -91,9 +91,12 @@ public class ApplicantRequestService {
 		return proxy.CancelRequest(requestId, applicantId);
 	}
 
-
-	public Rdv TraiterDemande(int requestId, int reponse, Date date) {
-		
+	@POST
+	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/traiterDemande")
+	public Rdv TraiterDemande(/*int requestId, int reponse, Date dateRdv*/) {
+		proxy.TraiterDemande(19, 1, new Date()); 
 		return null;
 	}
 

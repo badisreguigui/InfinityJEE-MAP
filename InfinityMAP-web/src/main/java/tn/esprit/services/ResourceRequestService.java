@@ -53,7 +53,10 @@ public class ResourceRequestService {
 			resourceRequestService.supprimerResourceRequest(id);
 	}
 
-
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/updateResourceRequest")
 	public void modifierResourceRequest(int id) {
 		// TODO Auto-generated method stub
 		

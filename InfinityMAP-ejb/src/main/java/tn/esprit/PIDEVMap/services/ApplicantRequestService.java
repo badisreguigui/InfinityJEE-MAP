@@ -90,6 +90,7 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 			Rdv rdv = new Rdv(); 
 			rdv.setRdvDate(date);
 			rdv.setState(RdvState.waiting);
+			rdv.setApplicant(em.find(ApplicantRequest.class, requestId).getApplicant());
 			em.persist(rdv);
 			
 		}

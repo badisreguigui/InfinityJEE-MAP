@@ -16,6 +16,12 @@ public class Rdv {
 	@ManyToOne
 	private Applicant applicant; 
 	
+	public Applicant getApplicant() {
+		return applicant;
+	}
+	public void setApplicant(Applicant applicant) {
+		this.applicant = applicant;
+	}
 	public int getId() {
 		return id;
 	}

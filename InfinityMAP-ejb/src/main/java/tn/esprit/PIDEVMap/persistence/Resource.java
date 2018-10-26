@@ -12,6 +12,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 /**
  * Entity implementation class for Entity: Resource
@@ -24,32 +26,45 @@ public class Resource implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	protected int id;
+	@JsonProperty("lastname")
 	protected String lastname;
+	@JsonProperty("firstname")
 	protected String firstname;
+	@JsonProperty("picture")
 	protected String picture;
+	@JsonProperty("seniority")
 	protected String seniority;
+	@JsonProperty("sector")
 	protected String sector;
+	@JsonProperty("profil")
 	protected String profil;
 	@Enumerated
+	@JsonProperty("contractype")
 	protected ContractType contractype;
 	@Enumerated
+	@JsonProperty("state")
 	protected State state;
-	
+	@JsonProperty("region")
 	protected String region;
+	@JsonProperty("rating")
 	protected float rating;
 	
 	
 	@ManyToMany
+	@JsonProperty("listSkills")
 	private List<Skills> listSkills;
 	
 	@ManyToMany(mappedBy="listResources")
+	@JsonProperty("listProjets")
 	private List<Projet> listProjets;
 
 	
 	 	@OneToMany(mappedBy="resource")
+	 	@JsonProperty("listMandats")
 		private List<Mandate> listMandats;
 
 	 	@OneToMany(mappedBy="resource")
+	 	@JsonProperty("listVacations")
 		private List<Vacation> listVacations;
 	 	
 	public Resource() {

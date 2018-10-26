@@ -7,7 +7,7 @@ import javax.persistence.PersistenceContext;
 import tn.esprit.PIDEVMap.persistence.Vacation;
 
 @Stateless
-public class VacationService implements VacationServiceRemote {
+public class VacationService implements VacationServiceLocale {
 	@PersistenceContext
 	EntityManager em;
 
