@@ -8,6 +8,7 @@ import java.util.Date;
 @Entity
 public class ApplicantFile {
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id; 
 	private float testResult;
 	

@@ -13,6 +13,7 @@ import java.util.Date;
 @Entity
 public class ApplicantRequest {
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id; 
 	@JsonProperty("date")
 	private Date date; 

@@ -9,6 +9,7 @@ import java.util.Date;
 @Entity
 public class ApplicantAnswer {
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id; 
 	private String answer;
 	
