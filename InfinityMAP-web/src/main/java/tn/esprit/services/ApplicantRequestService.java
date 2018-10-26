@@ -65,7 +65,7 @@ public class ApplicantRequestService {
 	@GET
 	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
 	@Path("/affecterRequest/{applicantId}/{requestId}")
-	public String affecterRequestAapplicant(@PathParam("applicantId") int applicantId, @PathParam("requestId") int requestId) {
+	public String affecterRequestAapplicant(@PathParam(value="applicantId") int applicantId, @PathParam(value="requestId") int requestId) {
 		proxy.affecterRequestAapplicant(applicantId, requestId);
 		//System.out.println(applicantId); 
 		return "response"+applicantId; 
