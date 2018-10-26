@@ -47,6 +47,7 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 	
 	@Override
 	public int sendRequet(ApplicantRequest request) {
+		
 		em.persist(request);
 		//request.setState(Requeststate.waiting);
 		return request.getId();

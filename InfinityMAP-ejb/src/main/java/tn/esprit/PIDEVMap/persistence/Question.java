@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Entity
 public class Question {
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	private String question; 
 	private String answer; 
