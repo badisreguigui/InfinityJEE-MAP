@@ -3,16 +3,19 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class Test {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id; 
+	@JsonProperty("category")
 	private CategoryTest category;
-	
+	@JsonProperty("questions")
 	@OneToMany(mappedBy="test")
 	List<Question> questions;
-	
+	@JsonProperty("applicants")
 	@ManyToMany
 	List<Applicant> applicants;
 

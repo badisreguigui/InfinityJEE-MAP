@@ -95,19 +95,21 @@ public class ApplicantRequestService {
 	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/traiterDemande")
-	public Rdv TraiterDemande(/*int requestId, int reponse, Date dateRdv*/) {
-		proxy.TraiterDemande(19, 1, new Date()); 
-		return null;
+	public String TraiterDemande(/*int requestId, int reponse, Date dateRdv*/) {
+		return proxy.TraiterDemande(19, 1, new Date()).getState().toString(); 
 	}
 
-
+	@POST
+	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/proposerTest")
 	public int proposerTest(CategoryTest categoryTest) {
-		
-		return 0;
+		return proxy.proposerTest(categoryTest);
 	}
 
 
 	public void ajouterQuestion(Question q, int testId) {
+		//proxy.ajouterQuestion(q, testId);
 	}
 
 

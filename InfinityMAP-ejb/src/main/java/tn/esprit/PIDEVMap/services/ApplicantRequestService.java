@@ -92,7 +92,7 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 			rdv.setState(RdvState.waiting);
 			rdv.setApplicant(em.find(ApplicantRequest.class, requestId).getApplicant());
 			em.persist(rdv);
-			
+			return rdv;
 		}
 		else if (reponse == -1){
 			request.setState(Requeststate.denied);
@@ -104,8 +104,8 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 	public int proposerTest(CategoryTest categoryTest) {
 		Test testReal = new Test(); 
 		testReal.setCategory(categoryTest);
-		
-		return 0;
+		em.persist(testReal);
+		return testReal.getId();
 	}
 
 	@Override
