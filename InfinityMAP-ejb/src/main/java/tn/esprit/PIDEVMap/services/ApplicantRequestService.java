@@ -9,7 +9,9 @@ import java.util.logging.Logger;
 import javax.ejb.Asynchronous;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
+import javax.ejb.Stateful;
 import javax.ejb.Stateless;
+import javax.enterprise.context.RequestScoped;
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -22,6 +24,7 @@ import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.ws.rs.Path;
 
 import tn.esprit.PIDEVMap.persistence.Applicant;
 import tn.esprit.PIDEVMap.persistence.ApplicantAnswer;
@@ -34,22 +37,25 @@ import tn.esprit.PIDEVMap.persistence.RdvState;
 import tn.esprit.PIDEVMap.persistence.Requeststate;
 import tn.esprit.PIDEVMap.persistence.Test;
 
-@Stateless
-public class ApplicantRequestService implements AppliquantRequestRemote {
+@Stateful
+@Path("/ApplicantRequestService")
+@RequestScoped
+public class ApplicantRequestService implements AppliquantRequestLocal {
 
 	@PersistenceContext(unitName="map-ejb")
 	EntityManager em;
 	
 	@Override
 	public int sendRequet(ApplicantRequest request) {
-		em.persist(request);
 		request.setState(Requeststate.waiting);
+		em.persist(request);
+		affecterRequestAapplicant(3, request.getId()); 
 		return request.getId();
 	}
 
 	@Override
-	public void affecterRequestAapplicant(int appliquantId, int requestId) {
-		em.find(ApplicantRequest.class, requestId).setApplicant(em.find(Applicant.class, appliquantId));
+	public void affecterRequestAapplicant(int applicantId, int requestId) {
+		em.find(ApplicantRequest.class, requestId).setApplicant(em.find(Applicant.class, applicantId));
 	}
 
 	@Override

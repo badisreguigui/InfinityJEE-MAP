@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.ws.rs.Path;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -40,12 +41,14 @@ public class ResourceRequest implements Serializable {
 	private int yearsOfExperience;
 	@JsonProperty("EducationScolarity")
 	private String EducationScolarity;
+	
 	@JsonProperty("project")
-	private String project;
+	@OneToOne(mappedBy="resourceRequest")
+	private Projet project;
 	@JsonProperty("Director")
 	private String Director;
 	
-	private String TestEntity;
+
 	
 	@JsonProperty("listMandats")
 	@OneToMany(mappedBy="request")
@@ -116,10 +119,11 @@ public class ResourceRequest implements Serializable {
 	public void setEducationScolarity(String educationScolarity) {
 		EducationScolarity = educationScolarity;
 	}
-	public String getProject() {
+	
+	public Projet getProject() {
 		return project;
 	}
-	public void setProject(String project) {
+	public void setProject(Projet project) {
 		this.project = project;
 	}
 	public String getDirector() {
@@ -130,7 +134,7 @@ public class ResourceRequest implements Serializable {
 	}
 	public ResourceRequest(int requestId, Date depotDate, int depotHour, Date mandateStartDate, Date mandateEndDate,
 			String requirements, String searchedProfile, int yearsOfExperience, String educationScolarity,
-			String project, String director) {
+			Projet project, String director) {
 		super();
 		this.requestId = requestId;
 		this.depotDate = depotDate;
