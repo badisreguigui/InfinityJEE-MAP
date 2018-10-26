@@ -49,7 +49,7 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 	public int sendRequet(ApplicantRequest request) {
 		request.setState(Requeststate.waiting);
 		em.persist(request);
-		//affecterRequestAapplicant(applicantId, request.getId()); 
+		affecterRequestAapplicant(3, request.getId()); 
 		return request.getId();
 	}
 

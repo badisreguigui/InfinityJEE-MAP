@@ -41,12 +41,11 @@ public class ResourceRequest implements Serializable {
 	@JsonProperty("EducationScolarity")
 	private String EducationScolarity;
 	@JsonProperty("project")
-	private String project;
+	private Projet project;
 	@JsonProperty("Director")
 	private String Director;
 	
-	private String TestEntity;
-	
+
 	@JsonProperty("listMandats")
 	@OneToMany(mappedBy="request")
 	private List<Mandate> listMandats;
@@ -116,10 +115,11 @@ public class ResourceRequest implements Serializable {
 	public void setEducationScolarity(String educationScolarity) {
 		EducationScolarity = educationScolarity;
 	}
-	public String getProject() {
+	
+	public Projet getProject() {
 		return project;
 	}
-	public void setProject(String project) {
+	public void setProject(Projet project) {
 		this.project = project;
 	}
 	public String getDirector() {
@@ -130,7 +130,7 @@ public class ResourceRequest implements Serializable {
 	}
 	public ResourceRequest(int requestId, Date depotDate, int depotHour, Date mandateStartDate, Date mandateEndDate,
 			String requirements, String searchedProfile, int yearsOfExperience, String educationScolarity,
-			String project, String director) {
+			Projet project, String director) {
 		super();
 		this.requestId = requestId;
 		this.depotDate = depotDate;
