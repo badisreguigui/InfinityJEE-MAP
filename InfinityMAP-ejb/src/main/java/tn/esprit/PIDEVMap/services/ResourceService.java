@@ -1,11 +1,16 @@
 package tn.esprit.PIDEVMap.services;
 
 
+import java.util.List;
+
+import javax.ejb.Stateful;
 import javax.ejb.Stateless;
+import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.Enumerated;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.ws.rs.Path;
 
 import tn.esprit.PIDEVMap.persistence.ArchiveResources;
 import tn.esprit.PIDEVMap.persistence.ContractType;
@@ -13,9 +18,11 @@ import tn.esprit.PIDEVMap.persistence.Projet;
 import tn.esprit.PIDEVMap.persistence.Resource;
 import tn.esprit.PIDEVMap.persistence.State;;
 
-@Stateless
-public class ResourceService implements ResourceServiceRemote  {
-	@PersistenceContext
+@Stateful
+@Path("/ResourceService")
+@RequestScoped
+public class ResourceService implements ResourceServiceLocale  {
+	@PersistenceContext(unitName="map-ejb")
 	EntityManager em;
 	@Override
 	public int AddResource(Resource r) {
@@ -24,7 +31,8 @@ public class ResourceService implements ResourceServiceRemote  {
 	}
 
 	@Override
-	public void DeleteResourceById(int ResourceId) {
+	public void DeleteResourceById(int ResourceId)
+	{
 		Resource r = em.find(Resource.class, ResourceId);
 		em.remove(r);
 		
@@ -52,6 +60,16 @@ public class ResourceService implements ResourceServiceRemote  {
 		em.find(Projet.class, projetId).getListResources().add(em.find(Resource.class, resourceId));
 		
 	}
+
+	@Override
+	public List<Resource> DisplayResource() {
+		List<Resource> allResources;
+		TypedQuery<Resource> query = em.createQuery("Select r from Resource r",Resource.class);
+		allResources=query.getResultList();
+		return allResources;
+	}
+	
+	
 
 	
 
