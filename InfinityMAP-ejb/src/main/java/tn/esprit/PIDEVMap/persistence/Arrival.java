@@ -8,6 +8,7 @@ import java.util.Date;
 @Entity
 public class Arrival {
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id; 
 	private Date arrivalDate;
 
