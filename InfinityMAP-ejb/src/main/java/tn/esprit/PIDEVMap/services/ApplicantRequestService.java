@@ -47,15 +47,15 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 	
 	@Override
 	public int sendRequet(ApplicantRequest request) {
-		
+		request.setState(Requeststate.waiting);
 		em.persist(request);
-		//request.setState(Requeststate.waiting);
+		affecterRequestAapplicant(3, request.getId()); 
 		return request.getId();
 	}
 
 	@Override
-	public void affecterRequestAapplicant(int appliquantId, int requestId) {
-		em.find(ApplicantRequest.class, requestId).setApplicant(em.find(Applicant.class, appliquantId));
+	public void affecterRequestAapplicant(int applicantId, int requestId) {
+		em.find(ApplicantRequest.class, requestId).setApplicant(em.find(Applicant.class, applicantId));
 	}
 
 	@Override
