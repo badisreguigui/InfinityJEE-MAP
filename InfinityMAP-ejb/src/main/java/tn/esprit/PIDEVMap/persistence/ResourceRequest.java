@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.ws.rs.Path;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -40,12 +41,15 @@ public class ResourceRequest implements Serializable {
 	private int yearsOfExperience;
 	@JsonProperty("EducationScolarity")
 	private String EducationScolarity;
+	
 	@JsonProperty("project")
+	@OneToOne(mappedBy="resourceRequest")
 	private Projet project;
 	@JsonProperty("Director")
 	private String Director;
 	
 
+	
 	@JsonProperty("listMandats")
 	@OneToMany(mappedBy="request")
 	private List<Mandate> listMandats;

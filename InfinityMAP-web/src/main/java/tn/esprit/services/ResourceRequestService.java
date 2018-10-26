@@ -45,11 +45,12 @@ public class ResourceRequestService {
 	}
 
 
-	public void supprimerResourceRequest(int id)
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	@Path("/deleteResourceRequest/{id}")
+	public void supprimerResourceRequest(@PathParam(value="id")int id)
 	{
-		
-		System.out.println(id);
-		//em.remove(em.find(ResourceRequest.class,id));	
+			resourceRequestService.supprimerResourceRequest(id);
 	}
 
 
@@ -63,7 +64,7 @@ public class ResourceRequestService {
 	@Path("/getResourceRequest")
 	public List<ResourceRequest> getAllResourceRequest()	
 	{
-		return resourceRequestService.getAllResourceRequest() ;
+		return resourceRequestService.getAllResourceRequest();
 	}
 
 

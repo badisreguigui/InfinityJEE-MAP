@@ -11,6 +11,7 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.print.attribute.standard.Media;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -56,7 +57,11 @@ public class ResourceRequestService implements ResourceRequestServiceLocal {
 	@Override
 	public List<ResourceRequest> getAllResourceRequest() {
     
-return null;
+		List<ResourceRequest>AllResources;
+		 TypedQuery<ResourceRequest> query=
+				 em.createQuery("Select r from ResourceRequest r",ResourceRequest.class);
+		AllResources=query.getResultList();
+		 return AllResources;
 	}
 
 

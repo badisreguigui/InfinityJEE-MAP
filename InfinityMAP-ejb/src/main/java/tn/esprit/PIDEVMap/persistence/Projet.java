@@ -31,9 +31,16 @@ public class Projet implements Serializable {
 	@ManyToMany
 	private List<Skills> listSkills;
 	
+	@OneToOne
+	private ResourceRequest resourceRequest;
 	
 	
-	
+	public ResourceRequest getResourceRequest() {
+		return resourceRequest;
+	}
+	public void setResourceRequest(ResourceRequest resourceRequest) {
+		this.resourceRequest = resourceRequest;
+	}
 	public Projet(TypeProjet statut) {
 		this.setStatut(statut);
 	}
