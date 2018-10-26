@@ -2,6 +2,7 @@ package tn.esprit.PIDEVMap.services;
 import java.util.Date;
 import java.util.Locale.Category;
 
+import javax.ejb.Local;
 import javax.ejb.Remote;
 
 import tn.esprit.PIDEVMap.persistence.ApplicantRequest;
@@ -10,8 +11,8 @@ import tn.esprit.PIDEVMap.persistence.Question;
 import tn.esprit.PIDEVMap.persistence.Rdv;
 import tn.esprit.PIDEVMap.persistence.Test;
 
-@Remote
-public interface AppliquantRequestRemote {
+@Local
+public interface AppliquantRequestLocal {
 	public int sendRequet(ApplicantRequest request); 
 	public void affecterRequestAapplicant(int appliquantId, int requestId); 
 	public ApplicantRequest suiviRequest(int requestId);
