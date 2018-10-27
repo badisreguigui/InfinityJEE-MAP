@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -50,40 +51,52 @@ public class Resource implements Serializable {
 	protected float rating;
 	
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JsonProperty("listSkills")
 	private List<Skills> listSkills;
 	
-	@ManyToMany(mappedBy="listResources")
+	/*@ManyToMany(mappedBy="listResources",fetch= FetchType.LAZY)
 	@JsonProperty("listProjets")
 	private List<Projet> listProjets;
 
 	
-	 	@OneToMany(mappedBy="resource")
+	 	@OneToMany(mappedBy="resource",fetch= FetchType.LAZY)
 	 	@JsonProperty("listMandats")
 		private List<Mandate> listMandats;
 
-	 	@OneToMany(mappedBy="resource")
+	 	@OneToMany(mappedBy="resource",fetch= FetchType.LAZY)
 	 	@JsonProperty("listVacations")
-		private List<Vacation> listVacations;
+		private List<Vacation> listVacations;*/
 	 	
 	public Resource() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
-	
-
-	
 
 
-
-
-	public Resource(String lastname, String firstname, String picture, String seniority, String sector, String profil,
-			ContractType contractype, State state, String region, float rating, List<Skills> listSkills,
-			List<Projet> listProjets, List<Mandate> listMandats, List<Vacation> listVacations) {
+	public Resource(int id, String lastname, String firstname, String picture, String seniority, String sector,
+			String profil, ContractType contractype, State state, String region, float rating) {
 		super();
+		this.id = id;
+		this.lastname = lastname;
+		this.firstname = firstname;
+		this.picture = picture;
+		this.seniority = seniority;
+		this.sector = sector;
+		this.profil = profil;
+		this.contractype = contractype;
+		this.state = state;
+		this.region = region;
+		this.rating = rating;
+	}
+
+
+
+	public Resource(int id, String lastname, String firstname, String picture, String seniority, String sector,
+			String profil, ContractType contractype, State state, String region, float rating, List<Skills> listSkills
+			) {
+		super();
+		this.id = id;
 		this.lastname = lastname;
 		this.firstname = firstname;
 		this.picture = picture;
@@ -95,17 +108,10 @@ public class Resource implements Serializable {
 		this.region = region;
 		this.rating = rating;
 		this.listSkills = listSkills;
-		this.listProjets = listProjets;
+		/*this.listProjets = listProjets;
 		this.listMandats = listMandats;
-		this.listVacations = listVacations;
+		this.listVacations = listVacations;*/
 	}
-
-
-
-
-
-
-
 
 
 	public int getId() {
@@ -172,16 +178,6 @@ public class Resource implements Serializable {
 
 
 
-	public List<Mandate> getListMandats() {
-		return listMandats;
-	}
-
-
-
-
-	public void setListMandats(List<Mandate> listMandats) {
-		this.listMandats = listMandats;
-	}
 
 
 
@@ -212,33 +208,23 @@ public class Resource implements Serializable {
 	}
 
 
+	public List<Skills> getListSkills() {
+		return listSkills;
+	}
 
 
-	public List<Projet> getListProjets() {
-		return listProjets;
+	public void setListSkills(List<Skills> listSkills) {
+		this.listSkills = listSkills;
 	}
 
 
 
-
-	public void setListProjets(List<Projet> listProjets) {
-		this.listProjets = listProjets;
-	}
-
-
-
-
-	public List<Vacation> getListVacations() {
-		return listVacations;
-	}
-
-
-
-
-	public void setListVacations(List<Vacation> listVacations) {
-		this.listVacations = listVacations;
-	}
 	
+
+
+
+
+
 	
 
 	
