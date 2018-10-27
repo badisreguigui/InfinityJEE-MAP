@@ -13,7 +13,7 @@ import tn.esprit.PIDEVMap.persistence.ResourceRequest;
 @Local
 public interface ResourceRequestServiceLocal
 {
-	public String ajouterResourceRequest(ResourceRequest ressourceRequest);
+	public String ajouterResourceRequest(ResourceRequest ressourceRequest,int idProjet);
 	public void supprimerResourceRequest(int id);
 	public void modifierResourceRequest(int id);
 	public List<ResourceRequest> getAllResourceRequest();

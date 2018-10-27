@@ -1,6 +1,11 @@
 package tn.esprit.PIDEVMap.services;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -21,6 +26,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import tn.esprit.PIDEVMap.persistence.Projet;
 import tn.esprit.PIDEVMap.persistence.ResourceRequest;
 
 @Stateful
@@ -33,9 +39,16 @@ public class ResourceRequestService implements ResourceRequestServiceLocal {
 	
 	
 	@Override
-	public String ajouterResourceRequest(ResourceRequest ressourceRequest)
+	public String ajouterResourceRequest(ResourceRequest ressourceRequest,int idProjet)
 	{
-
+ 
+		long millis=System.currentTimeMillis();  
+		java.sql.Date date=new java.sql.Date(millis);  
+		//System.out.println(date); 
+       ressourceRequest.setProject(em.find(Projet.class,idProjet));
+       ressourceRequest.setDepotDate(date);
+       ressourceRequest.setMandateEndDate(date);
+       ressourceRequest.setMandateStartDate(date);
 		em.persist(ressourceRequest);
 		return " Successfull";
 	}

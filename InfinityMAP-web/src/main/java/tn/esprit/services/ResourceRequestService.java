@@ -37,10 +37,10 @@ public class ResourceRequestService {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("/addResourceRequest")
-	public String ajouterResourceRequest(ResourceRequest ressourceRequest)
+	@Path("/addResourceRequest/{idProjet}")
+	public String ajouterResourceRequest(ResourceRequest ressourceRequest,@PathParam(value="idProjet") int idProjet)
 	{
-	    resourceRequestService.ajouterResourceRequest(ressourceRequest);
+	    resourceRequestService.ajouterResourceRequest(ressourceRequest,idProjet);
 	    return " Add Succeded";
 	}
 

@@ -31,7 +31,7 @@ public class Projet implements Serializable {
 	@ManyToMany
 	private List<Skills> listSkills;
 	
-	@OneToOne
+	@OneToOne(mappedBy="project")
 	private ResourceRequest resourceRequest;
 	
 	

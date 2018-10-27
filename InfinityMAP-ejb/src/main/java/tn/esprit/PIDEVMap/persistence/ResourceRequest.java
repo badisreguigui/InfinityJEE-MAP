@@ -43,8 +43,10 @@ public class ResourceRequest implements Serializable {
 	private String EducationScolarity;
 	
 	@JsonProperty("project")
-	@OneToOne(mappedBy="resourceRequest")
+	@OneToOne
 	private Projet project;
+	
+	
 	@JsonProperty("Director")
 	private String Director;
 	
@@ -55,6 +57,7 @@ public class ResourceRequest implements Serializable {
 	private List<Mandate> listMandats;
 	
    
+	
 	public List<Mandate> getListMandats() {
 		return listMandats;
 	}
