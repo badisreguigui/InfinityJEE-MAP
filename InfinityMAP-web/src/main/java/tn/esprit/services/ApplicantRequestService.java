@@ -86,19 +86,20 @@ public class ApplicantRequestService {
 	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/cancelRequest")
-	public String CancelRequest(String requestIdapplicantId) {
-		String[] parts = requestIdapplicantId.split("/"); 
+	public String CancelRequest(@QueryParam(value="requestId") int requestId, @QueryParam(value="applicantId") int applicantId) {
+		/*String[] parts = requestIdapplicantId.split("/"); 
 		int requestId = Integer.parseInt(parts[0]); 
-		int applicantId = Integer.parseInt(parts[1]); 
+		int applicantId = Integer.parseInt(parts[1]); */
+		
 		return proxy.CancelRequest(requestId, applicantId);
 	}
 
 	@POST
 	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("/traiterDemande")
-	public String TraiterDemande(/*int requestId, int reponse, Date dateRdv*/) {
-		return proxy.TraiterDemande(19, 1, new Date()).getState().toString(); 
+	@Path("/traiterDemande") //...traiterDemande?requestId=6&reponse=1&dateRdv=2019/08/21
+	public String TraiterDemande(@QueryParam(value="requestId") int requestId, @QueryParam(value="reponse") int reponse, @QueryParam(value="dateRdv") Date dateRdv) {
+		return proxy.TraiterDemande(requestId, reponse, dateRdv); 
 	}
 
 	@POST

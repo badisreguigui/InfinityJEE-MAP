@@ -53,12 +53,28 @@ public class ApplicantFileService implements ApplicantFileServiceLocal{
 		Question questionAnswered = em.find(Question.class, questionId); 
 		Applicant applicant = em.find(Applicant.class, applicantId);
 		if((questionAnswered != null) && (applicant != null)){
-			myAnswer.setApplicant(applicant);
-			myAnswer.setQuestion(questionAnswered);
-			em.persist(myAnswer);
-			return "Reponse Ajoutée"; 
+			if(VerifierExistencePrecedente(applicantId, questionId)){ 
+				myAnswer.setApplicant(applicant);
+				myAnswer.setQuestion(questionAnswered);
+				em.persist(myAnswer);
+				return "Reponse Ajoutée"; 
+			}
+			return "Vous ne pouvez pas répondre 2 fois à la même question !"; 
 		}
 		return "Vérifiez vos données"; 
+	}
+	
+	public boolean VerifierExistencePrecedente(int applicantId, int questionId){
+		String selectQuestion = "SELECT q FROM Question AS q WHERE q.id = :questionId"; 
+		selectQuestion = selectQuestion.replace(":questionId", ""+questionId); 
+		
+		String selectApplicant = "SELECT a FROM Applicant AS a WHERE a.id = :applicantId"; 
+		selectApplicant = selectApplicant.replace(":applicantId", ""+applicantId); 
+		
+		TypedQuery<ApplicantAnswer> query = em.createQuery("SELECT r FROM ApplicantAnswer AS r WHERE r.applicant = ("+selectApplicant+") AND r.question = ("+selectQuestion+")", ApplicantAnswer.class); 
+		List request = query.getResultList();
+		
+		return request.isEmpty(); 
 	}
 
 	@Override

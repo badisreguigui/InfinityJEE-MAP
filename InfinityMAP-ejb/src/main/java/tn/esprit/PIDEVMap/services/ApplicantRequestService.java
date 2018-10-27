@@ -83,10 +83,9 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 
 	@Override
 	public String CancelRequest(int requestId, int applicantId) {
-		//verify if applicantId of the owner of the request is the same
 		ApplicantRequest request = em.find(ApplicantRequest.class, requestId);
 		if(request != null){
-			if(request.getApplicant().getId() == applicantId){
+			if(request.getApplicant().getId() == applicantId){ //peut gérer NullPointerException si getId est null
 				em.remove(request);
 				return "deleted"; 
 			}
@@ -98,7 +97,7 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 	}
 
 	@Override
-	public Rdv TraiterDemande(int requestId, int reponse, Date date) {
+	public String TraiterDemande(int requestId, int reponse, Date date) {
 		ApplicantRequest request = em.find(ApplicantRequest.class, requestId);
 		if(reponse == 1){
 			request.setState(Requeststate.inProcess);
@@ -108,10 +107,11 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 			rdv.setState(RdvState.waiting);
 			rdv.setApplicant(em.find(ApplicantRequest.class, requestId).getApplicant());
 			em.persist(rdv);
-			return rdv;
+			return "RDV pris pour le "+rdv.getRdvDate()+" , le statut du rdv est: "+rdv.getState().toString();
 		}
 		else if (reponse == -1){
 			request.setState(Requeststate.denied);
+			return "Vous avez refuse la demande. Pas de rdv pris"; 
 		}
 		return null;
 	}
