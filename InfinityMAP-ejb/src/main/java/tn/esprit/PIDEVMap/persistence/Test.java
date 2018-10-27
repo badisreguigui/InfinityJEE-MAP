@@ -13,7 +13,7 @@ public class Test {
 	@JsonProperty("category")
 	private CategoryTest category;
 	@JsonProperty("questions")
-	@OneToMany(mappedBy="test")
+	@OneToMany(mappedBy="test", fetch = FetchType.EAGER)
 	List<Question> questions;
 	@JsonProperty("applicants")
 	@ManyToMany

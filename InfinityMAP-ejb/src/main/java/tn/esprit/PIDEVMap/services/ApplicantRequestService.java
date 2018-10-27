@@ -136,24 +136,32 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 		float result = 0; 
 		Test test = em.find(Test.class, testId); 
 		List<Question> questions = test.getQuestions(); 
+		ApplicantFileService proxy = new ApplicantFileService(); 
 		for (Question question : questions){
-			TypedQuery<ApplicantAnswer> query = em.createQuery("SELECT q FROM ApplicantAnswer WHERE q.questionId = :questionId AND q.applicantId = :applicantId", ApplicantAnswer.class); 
-		    ApplicantAnswer answer = query.setParameter("questionId", question.getId())
-		    	  .setParameter("applicantId", applicantId).getSingleResult(); 
-		    
-		    if (answer.getAnswer() == question.getAnswer()){
+			String selectQuestion = "SELECT q FROM Question AS q WHERE q.id = :questionId"; 
+			selectQuestion = selectQuestion.replace(":questionId", ""+question.getId()); 
+			String selectApplicant = "SELECT a FROM Applicant AS a WHERE a.id = :applicantId"; 
+			selectApplicant = selectApplicant.replace(":applicantId", ""+applicantId); 
+			TypedQuery<ApplicantAnswer> query = em.createQuery("SELECT r FROM ApplicantAnswer AS r WHERE r.applicant = ("+selectApplicant+") AND r.question = ("+selectQuestion+")", ApplicantAnswer.class); 
+			ApplicantAnswer applicantAnswer = query.getSingleResult();
+			
+			if (applicantAnswer.getAnswer().equals(question.getAnswer())){
 		    	result+=10; 
 		    }
 		}
-		
-		TypedQuery<ApplicantFile> query = em.createQuery("SELECT q FROM ApplicantFile WHERE q.applicantId = :applicantId", ApplicantFile.class); 
-		ApplicantFile file = query.setParameter("applicantId", applicantId).getSingleResult(); 
-	    
+		result = result/questions.size(); 
+		Applicant applicant = em.find(Applicant.class, applicantId); 
+		ApplicantFile file = applicant.getApplicantFile(); 
 		if (file != null){
 	    	file.setTestResult(result);	
-	    }
-		///mettre une appreciation sur la note
-		return result/questions.size();
+	    } else{
+			ApplicantFile newfile = new ApplicantFile(); 
+			newfile.setTestResult(result);
+			newfile.setApplicant(applicant);
+			em.persist(newfile);
+		}
+		///mettre une appreciation sur la note + changer état applicant selon note du test
+		return result;
 	}
 	
 	
@@ -164,7 +172,6 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 	@Lock(LockType.READ)
 	    public void sendMail(String recipient, String subject, String text) {
 	        try {
-
 	            InitialContext ic = new InitialContext();
 	            mailSession = (Session) ic.lookup("java:/futuramail");
 	            MimeMessage message = new MimeMessage(mailSession);
@@ -198,6 +205,7 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 	@Override
 	public void proposerLettre(int applicantId, String bodyFormulaire) {
 		// TODO Auto-generated method stub
-		
 	}
+	
+	
 }

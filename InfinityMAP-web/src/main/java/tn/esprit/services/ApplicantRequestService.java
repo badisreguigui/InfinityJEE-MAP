@@ -132,8 +132,7 @@ public class ApplicantRequestService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/corrigerTest")
 	public float corrigerTest(@QueryParam(value="testId") int testId, @QueryParam(value="applicantId") int applicantId) { //on peut mettre cette fonction dans une boucle pour corriger tous les tests de tous les applicant
-			
-		return 0; 
+		return proxy.corrigerTest(testId, applicantId); 	
 	}
 		
 	public void envoyerMailMinistere(String adresseMinistere, int applicantId) {
@@ -151,5 +150,14 @@ public class ApplicantRequestService {
 	public void proposerLettre(int applicantId, String bodyFormulaire) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	////partie ApplicantFile
+	@POST
+	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/listeQuestions")
+	public int recevoirQuestions(@QueryParam(value="testId") int testId) {
+		return proxyFile.recevoirQuestions(testId).size(); 
 	}
 }
