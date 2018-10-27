@@ -63,7 +63,9 @@ public class ResourceRequestService implements ResourceRequestServiceLocal {
 
 	@Override
 	public void modifierResourceRequest(int id) {
-		// TODO Auto-generated method stub
+		
+		 
+		
 		
 	}
 

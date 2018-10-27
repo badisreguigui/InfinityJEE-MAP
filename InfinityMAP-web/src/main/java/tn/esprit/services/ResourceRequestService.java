@@ -56,9 +56,10 @@ public class ResourceRequestService {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("/updateResourceRequest")
-	public void modifierResourceRequest(int id) {
-		// TODO Auto-generated method stub
+	@Path("/updateResourceRequest/{id}")
+	public void modifierResourceRequest(@PathParam(value="id")int id)
+	{
+		resourceRequestService.modifierResourceRequest(id);
 		
 	}
 
