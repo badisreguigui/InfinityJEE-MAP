@@ -35,11 +35,11 @@ public class Mandate implements Serializable {
 	private String NomMandat;
 
 	@ManyToOne
-	@JsonBackReference
+	@JsonBackReference(value="request")
 	private ResourceRequest request;
 	private float Facture;
 	@ManyToOne
-	@JsonBackReference
+	@JsonBackReference(value="resource")
 	private Resource resource;
 	@ManyToOne
 	@JsonBackReference

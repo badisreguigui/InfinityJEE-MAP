@@ -16,5 +16,5 @@ public interface MandateServiceRemote {
 	public String AlerteFinMandate();
 	public float calculFactureMandat(int mandateId,int ResourceId); 
 	public float calculTotalMandat(int ResourceId);
-	public boolean GPS(int ressourceId, int projetId);
+	public boolean GPS();
 }
