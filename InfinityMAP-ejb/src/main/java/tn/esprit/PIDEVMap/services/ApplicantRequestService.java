@@ -122,8 +122,9 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 
 	@Override
 	public void ajouterQuestion(Question q, int testId) {
+		//em.find(Test.class, testId).getQuestions().add(q);	
+		q.setTest(em.find(Test.class, testId)); 
 		em.persist(q); 
-		em.find(Test.class, testId).getQuestions().add(q);	
 	}
 
 	@Override

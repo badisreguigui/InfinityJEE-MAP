@@ -2,10 +2,13 @@ package tn.esprit.PIDEVMap.services;
 
 import java.util.List;
 
+import javax.ejb.Stateful;
 import javax.ejb.Stateless;
+import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.ws.rs.Path;
 
 import tn.esprit.PIDEVMap.persistence.Applicant;
 import tn.esprit.PIDEVMap.persistence.ApplicantAnswer;
@@ -14,8 +17,10 @@ import tn.esprit.PIDEVMap.persistence.ApplicantRequest;
 import tn.esprit.PIDEVMap.persistence.Question;
 import tn.esprit.PIDEVMap.persistence.Test;
 
-@Stateless
-public class ApplicantFileService implements ApplicantFileServiceRemote{
+@Stateful
+@Path("/ApplicantRequestService")
+@RequestScoped
+public class ApplicantFileService implements ApplicantFileServiceLocal{
 	@PersistenceContext(unitName="map-ejb")
 	EntityManager em;
 
@@ -41,11 +46,18 @@ public class ApplicantFileService implements ApplicantFileServiceRemote{
 	}
 
 	@Override
-	public void repondreQuestion(int questionId, String reponse, int applicantId) {
+	public String repondreQuestion(int questionId, String reponse, int applicantId) {
 		ApplicantAnswer myAnswer = new ApplicantAnswer(); 
 		myAnswer.setAnswer(reponse);
-		myAnswer.setApplicant(em.find(Applicant.class, applicantId));
-		myAnswer.setQuestion(em.find(Question.class, questionId));
+		Question questionAnswered = em.find(Question.class, questionId); 
+		Applicant applicant = em.find(Applicant.class, applicantId);
+		if((questionAnswered != null) && (applicant != null)){
+			myAnswer.setApplicant(applicant);
+			myAnswer.setQuestion(questionAnswered);
+			em.persist(myAnswer);
+			return "Reponse Ajoutée"; 
+		}
+		return "Vérifiez vos données"; 
 	}
 
 	@Override

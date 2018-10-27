@@ -44,6 +44,7 @@ import tn.esprit.PIDEVMap.persistence.Rdv;
 import tn.esprit.PIDEVMap.persistence.RdvState;
 import tn.esprit.PIDEVMap.persistence.Requeststate;
 import tn.esprit.PIDEVMap.persistence.Test;
+import tn.esprit.PIDEVMap.services.ApplicantFileServiceLocal;
 import tn.esprit.PIDEVMap.services.AppliquantRequestLocal;
 
 @Path("/ApplicantRequestService")
@@ -52,6 +53,8 @@ public class ApplicantRequestService {
 
 	@EJB 
 	AppliquantRequestLocal proxy; 
+	@EJB 
+	ApplicantFileServiceLocal proxyFile; 
 	
 	@POST
 	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
@@ -106,13 +109,29 @@ public class ApplicantRequestService {
 		return proxy.proposerTest(categoryTest);
 	}
 
-
-	public void ajouterQuestion(Question q, int testId) {
-		//proxy.ajouterQuestion(q, testId);
+	@POST
+	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/ajouterQuestion")
+	public void ajouterQuestion(Question q, @QueryParam(value="testId") int testId) {
+		proxy.ajouterQuestion(q, testId);
 	}
 
-
-	public float corrigerTest(int testId, int applicantId) { //on peut mettre cette fonction dans une boucle pour corriger tous les tests de tous les applicant
+	
+	@POST
+	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/repondreQuestion")
+	public String repondreQuestion(@QueryParam(value="questionId") int questionId, @QueryParam(value="reponse") String reponse, @QueryParam(value="applicantId") int applicantId) { 			
+		return proxyFile.repondreQuestion(questionId, reponse, applicantId);
+	}
+	
+	@POST
+	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/corrigerTest")
+	public float corrigerTest(@QueryParam(value="testId") int testId, @QueryParam(value="applicantId") int applicantId) { //on peut mettre cette fonction dans une boucle pour corriger tous les tests de tous les applicant
+			
 		return 0; 
 	}
 		
