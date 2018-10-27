@@ -49,6 +49,7 @@ public class ApplicantFileService implements ApplicantFileServiceLocal{
 	public String repondreQuestion(int questionId, String reponse, int applicantId) {
 		ApplicantAnswer myAnswer = new ApplicantAnswer(); 
 		myAnswer.setAnswer(reponse);
+		
 		Question questionAnswered = em.find(Question.class, questionId); 
 		Applicant applicant = em.find(Applicant.class, applicantId);
 		if((questionAnswered != null) && (applicant != null)){

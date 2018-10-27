@@ -60,15 +60,19 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 
 	@Override
 	public String affecterRequestAapplicant(int applicantId, int requestId) {
-		TypedQuery<ApplicantRequest> query = em.createQuery("SELECT r FROM ApplicantRequest AS r WHERE r.applicantId = (SELECT a FROM Applicant AS a WHERE a.id = : applicantId)", ApplicantRequest.class); 
-		ApplicantRequest request = query.setParameter("applicantId", applicantId).getSingleResult(); 
-		////LA METHODE NE MARCHE PAS PUISQUE applicantId ne fait pas partie de la classe
-		//ApplicantRequest request = em.find(Applicant.class, applicantId).getApplicantRequest(); 
-		if (request == null){
-			em.find(ApplicantRequest.class, requestId).setApplicant(em.find(Applicant.class, applicantId));
-			return "success"; 
+		String selectApplicant = "SELECT a FROM Applicant AS a WHERE a.id = :applicantId"; 
+		selectApplicant = selectApplicant.replace(":applicantId", ""+applicantId); 
+		TypedQuery<ApplicantRequest> query = em.createQuery("SELECT r FROM ApplicantRequest AS r WHERE r.applicant = ("+selectApplicant+")", ApplicantRequest.class); 
+		List request = query.getResultList(); 
+		if (request.isEmpty()){
+			Applicant applicant = em.find(Applicant.class, applicantId); 
+			if(applicant != null){
+				em.find(ApplicantRequest.class, requestId).setApplicant(applicant);
+				return "Success"; 
+			}
+			return "The Applicant doesn't exist"; 
 		}
-		return "applicant already has a request!"; 
+		return "Applicant already has a request!"; 
 	}
 
 	@Override
