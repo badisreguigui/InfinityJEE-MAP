@@ -13,8 +13,11 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-
+import javax.ws.rs.core.Response;
 
 import tn.esprit.PIDEVMap.persistence.Mandate;
 import tn.esprit.PIDEVMap.persistence.ResourceRequest;
@@ -84,6 +87,18 @@ public class MandateService {
 	public float CalculFactureTotale(@QueryParam(value = "resourceId")int resourceId)
 	{
 		return mandate.calculTotalMandat(resourceId);
+	}
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("localisation")
+	public String geolocalisation(){
+		Client client = ClientBuilder.newClient();
+		Response response = client.target("http://api.ipstack.com/134.201.250.155?access_key=6bac93a513e7d21a4536fd82ec523554&Scallback = MY_FUNCTION")
+		  .request(MediaType.TEXT_PLAIN_TYPE)
+		  .header("Accept", "application/json")
+		  .get();
+String result =response.readEntity(String.class);
+	return result;
 	}
 }  
 

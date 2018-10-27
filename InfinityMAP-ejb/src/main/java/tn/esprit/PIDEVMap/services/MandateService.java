@@ -18,6 +18,10 @@ import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import tn.esprit.PIDEVMap.persistence.HistoriqueAssignationMandat;
 import tn.esprit.PIDEVMap.persistence.Mandate;
@@ -133,7 +137,7 @@ public class MandateService implements MandateServiceRemote {
 		for (Mandate m : query.getResultList()) {
 			if (m.getDate_end_mandate().getDay() - Calendar.getInstance().getTime().getDay() <= 2) {
 				final String username = "akroutabir@gmail.com";
-				final String password = "zazazazaza";
+				final String password = "";
 				Properties props = new Properties();
 				props.put("mail.smtp.auth", "true");
 				props.put("mail.smtp.starttls.enable", "true");
@@ -197,8 +201,8 @@ public class MandateService implements MandateServiceRemote {
 	}
 
 	@Override
-	public boolean GPS(int ressourceId, int projetId) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean GPS() {
+	
+		return true;
 	}
 }

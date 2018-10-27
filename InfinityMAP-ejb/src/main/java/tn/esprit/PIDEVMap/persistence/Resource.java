@@ -57,8 +57,8 @@ public class Resource implements Serializable {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JsonProperty("listSkills")
 	private List<Skills> listSkills;
-	@JsonManagedReference
-	@OneToMany(mappedBy="request",cascade=CascadeType.PERSIST)
+	@JsonManagedReference(value="resource")
+	@OneToMany(mappedBy="resource",cascade=CascadeType.PERSIST)
 
 	private List<Mandate>ListMandats;
 	

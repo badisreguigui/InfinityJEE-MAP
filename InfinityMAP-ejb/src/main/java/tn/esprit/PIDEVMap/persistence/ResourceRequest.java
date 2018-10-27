@@ -67,7 +67,7 @@ private String Title;
 public void setTitle(String title) {
 	Title = title;
 }
-	@JsonManagedReference
+	@JsonManagedReference(value="request")
 	@OneToMany(mappedBy="request",cascade=CascadeType.PERSIST,fetch=FetchType.EAGER)
 	private List<Mandate>ListMandats;
   
