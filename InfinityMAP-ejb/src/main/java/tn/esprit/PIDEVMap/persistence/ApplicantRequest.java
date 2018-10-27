@@ -18,7 +18,7 @@ public class ApplicantRequest {
 	private int id; 
 	@JsonProperty("date")
 	private Date date; 
-	@JsonProperty("specialty")
+	@JsonProperty("speciality")
 	private String speciality; 
 	@JsonProperty("state")
 	@Enumerated(EnumType.STRING)

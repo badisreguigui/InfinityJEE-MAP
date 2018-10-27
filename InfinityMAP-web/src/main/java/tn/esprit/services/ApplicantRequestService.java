@@ -31,6 +31,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import tn.esprit.PIDEVMap.persistence.Applicant;
@@ -56,19 +57,17 @@ public class ApplicantRequestService {
 	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/sendRequest")
-	public int sendRequet(ApplicantRequest request) {
-		 return proxy.sendRequet(request); 
+	public int sendRequet(String speciality) {
+		 return proxy.sendRequet(speciality); 
 		 //proxy.affecterRequestAapplicant(appliquantId, requestId);
 		//return 0;
 	}
 
 	@GET
 	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
-	@Path("/affecterRequest/{applicantId}/{requestId}")
-	public String affecterRequestAapplicant(@PathParam(value="applicantId") int applicantId, @PathParam(value="requestId") int requestId) {
-		proxy.affecterRequestAapplicant(applicantId, requestId);
-		//System.out.println(applicantId); 
-		return "response"+applicantId; 
+	@Path("/affecterRequest") //URL: .../affecterRequest?applicantId=3&requestId=7
+	public String affecterRequestAapplicant(@QueryParam(value="applicantId") int applicantId, @QueryParam(value="requestId") int requestId) {
+		return proxy.affecterRequestAapplicant(applicantId, requestId);	
 	}
 
 
@@ -95,19 +94,21 @@ public class ApplicantRequestService {
 	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/traiterDemande")
-	public Rdv TraiterDemande(/*int requestId, int reponse, Date dateRdv*/) {
-		proxy.TraiterDemande(19, 1, new Date()); 
-		return null;
+	public String TraiterDemande(/*int requestId, int reponse, Date dateRdv*/) {
+		return proxy.TraiterDemande(19, 1, new Date()).getState().toString(); 
 	}
 
-
+	@POST
+	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/proposerTest")
 	public int proposerTest(CategoryTest categoryTest) {
-		
-		return 0;
+		return proxy.proposerTest(categoryTest);
 	}
 
 
 	public void ajouterQuestion(Question q, int testId) {
+		//proxy.ajouterQuestion(q, testId);
 	}
 
 
