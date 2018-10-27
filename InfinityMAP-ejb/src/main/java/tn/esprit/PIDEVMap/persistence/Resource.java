@@ -3,6 +3,7 @@ package tn.esprit.PIDEVMap.persistence;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -13,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
@@ -49,11 +51,18 @@ public class Resource implements Serializable {
 	protected String region;
 	@JsonProperty("rating")
 	protected float rating;
-	
-	
+	private Float salaireHoraire;
+	private Float TotalFactureMandat;
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JsonProperty("listSkills")
 	private List<Skills> listSkills;
+	@JsonManagedReference
+	@OneToMany(mappedBy="request",cascade=CascadeType.PERSIST)
+
+	private List<Mandate>ListMandats;
+	
+  
 	
 	/*@ManyToMany(mappedBy="listResources",fetch= FetchType.LAZY)
 	@JsonProperty("listProjets")
@@ -68,6 +77,36 @@ public class Resource implements Serializable {
 	 	@JsonProperty("listVacations")
 		private List<Vacation> listVacations;*/
 	 	
+	public Float getSalaireHoraire() {
+		return salaireHoraire;
+	}
+
+
+	public void setSalaireHoraire(Float salaireHoraire) {
+		this.salaireHoraire = salaireHoraire;
+	}
+
+
+	public Float getTotalFactureMandat() {
+		return TotalFactureMandat;
+	}
+
+
+	public void setTotalFactureMandat(Float totalFactureMandat) {
+		TotalFactureMandat = totalFactureMandat;
+	}
+
+
+	public List<Mandate> getListMandats() {
+		return ListMandats;
+	}
+
+
+	public void setListMandats(List<Mandate> listMandats) {
+		ListMandats = listMandats;
+	}
+
+
 	public Resource() {
 		super();
 		// TODO Auto-generated constructor stub

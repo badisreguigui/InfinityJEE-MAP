@@ -4,16 +4,21 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.ws.rs.Path;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
@@ -30,8 +35,11 @@ public class ResourceRequest implements Serializable {
 	@JsonProperty("depotHour")
 	private int depotHour;
 	@JsonProperty("mandateStartDate")
+	@Temporal(TemporalType.DATE)
 	private Date mandateStartDate;
+
 	@JsonProperty("mandateEndDate")
+	@Temporal(TemporalType.DATE)
 	private Date mandateEndDate;
 	@JsonProperty("requiremenets")
 	private String requirements;
@@ -42,6 +50,7 @@ public class ResourceRequest implements Serializable {
 	@JsonProperty("EducationScolarity")
 	private String EducationScolarity;
 	
+	
 	@JsonProperty("project")
 	@OneToOne
 	private Projet project;
@@ -50,23 +59,28 @@ public class ResourceRequest implements Serializable {
 	@JsonProperty("Director")
 	private String Director;
 	
+private String Title;
+	
+	public String getTitle() {
+	return Title;
+}
+public void setTitle(String title) {
+	Title = title;
+}
+	@JsonManagedReference
+	@OneToMany(mappedBy="request",cascade=CascadeType.PERSIST,fetch=FetchType.EAGER)
+	private List<Mandate>ListMandats;
+  
+	
+	
 
-	
-	@JsonProperty("listMandats")
-	@OneToMany(mappedBy="request")
-	private List<Mandate> listMandats;
-	
-   
 	
 	public List<Mandate> getListMandats() {
-		return listMandats;
+		return ListMandats;
 	}
 	public void setListMandats(List<Mandate> listMandats) {
-		this.listMandats = listMandats;
+		ListMandats = listMandats;
 	}
-	
-
-	
 	public int getRequestId()
 	{
 		return requestId;
