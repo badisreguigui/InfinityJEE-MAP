@@ -14,8 +14,8 @@ import tn.esprit.PIDEVMap.persistence.Test;
 
 @Local
 public interface AppliquantRequestLocal {
-	public int sendRequet(ApplicantRequest request); 
-	public void affecterRequestAapplicant(int appliquantId, int requestId); 
+	public int sendRequet(String speciality); 
+	public String affecterRequestAapplicant(int appliquantId, int requestId); 
 	public Requeststate suiviRequest(int requestId);
 	public String CancelRequest(int applicantId, int requestId); //supprimer + verifier si applicantId est celui de la demande
 	

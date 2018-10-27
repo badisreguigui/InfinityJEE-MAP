@@ -46,17 +46,29 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 	EntityManager em;
 	
 	@Override
-	public int sendRequet(ApplicantRequest request) {
+	public int sendRequet(String speciality) {
+		ApplicantRequest request = new ApplicantRequest(); 
+		request.setSpeciality(speciality);
 		request.setDate(new Date());
 		request.setState(Requeststate.waiting);
+		//affecterRequestAapplicant(1, request.getId()); 
+		//request.setApplicant(em.find(Applicant.class, 2));
 		em.persist(request);
-		affecterRequestAapplicant(3, request.getId()); 
+		//em.find(ApplicantRequest.class, request.getId()).setApplicant(em.find(Applicant.class, 1));
 		return request.getId();
 	}
 
 	@Override
-	public void affecterRequestAapplicant(int applicantId, int requestId) {
-		em.find(ApplicantRequest.class, requestId).setApplicant(em.find(Applicant.class, applicantId));
+	public String affecterRequestAapplicant(int applicantId, int requestId) {
+		TypedQuery<ApplicantRequest> query = em.createQuery("SELECT r FROM ApplicantRequest AS r WHERE r.applicantId = (SELECT a FROM Applicant AS a WHERE a.id = : applicantId)", ApplicantRequest.class); 
+		ApplicantRequest request = query.setParameter("applicantId", applicantId).getSingleResult(); 
+		////LA METHODE NE MARCHE PAS PUISQUE applicantId ne fait pas partie de la classe
+		//ApplicantRequest request = em.find(Applicant.class, applicantId).getApplicantRequest(); 
+		if (request == null){
+			em.find(ApplicantRequest.class, requestId).setApplicant(em.find(Applicant.class, applicantId));
+			return "success"; 
+		}
+		return "applicant already has a request!"; 
 	}
 
 	@Override
