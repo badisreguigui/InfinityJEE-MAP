@@ -2,12 +2,14 @@ package tn.esprit.PIDEVMap.services;
 
 
 import java.util.Date;
+import java.util.HashSet;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Stateful;
 import javax.ejb.Stateless;
@@ -27,6 +29,7 @@ import javax.ws.rs.Path;
 import tn.esprit.PIDEVMap.persistence.ArchiveResources;
 import tn.esprit.PIDEVMap.persistence.ContractType;
 import tn.esprit.PIDEVMap.persistence.LigneSkill;
+import tn.esprit.PIDEVMap.persistence.Mandate;
 import tn.esprit.PIDEVMap.persistence.Projet;
 import tn.esprit.PIDEVMap.persistence.Resource;
 import tn.esprit.PIDEVMap.persistence.Skills;
@@ -41,6 +44,14 @@ public class ResourceService implements ResourceServiceLocale  {
 	EntityManager em;
 	@Override
 	public int AddResource(Resource r) {
+		r.setHoliday(0);
+		r.setSalaireHoraire(null);
+		r.setTotalFactureMandat(null);
+		r.setRating(0);
+		r.setState(State.Available);
+		r.setListMandats(null);
+		r.setListProjets(null);
+		r.setListSkills(null);
 		em.persist(r);
 		return r.getId();
 	}
@@ -106,16 +117,19 @@ public class ResourceService implements ResourceServiceLocale  {
 		
 	}
 	@Override
-	public List<Resource> DisplayResource() {
+	public Set<Resource> DisplayResource() {
 		List<Resource> allResources;
-		
+		Set<Resource> allResourcesSet = new HashSet<>();
 		TypedQuery<Resource> query = em.createQuery("Select r from Resource r",Resource.class);
 		allResources=query.getResultList();
-		return allResources;
+		for(Resource r : allResources){
+			allResourcesSet.add(r);
+		}
+		return allResourcesSet;
 	}
-	public List<Resource> FilterByName(String name,String firstname,int seniority,String sector,String profil,
+	public Set<Resource> FilterByName(String name,String firstname,int seniority,String sector,String profil,
 			String contractype,String state,String region){
-		
+			Set<Resource> ResourcesSet = new HashSet<>();
 			CriteriaBuilder builder = em.getCriteriaBuilder();
 			
 			CriteriaQuery<Resource> criteriaQuery = builder.createQuery(Resource.class);
@@ -161,7 +175,10 @@ public class ResourceService implements ResourceServiceLocale  {
 			Query query = em.createQuery(criteriaQuery);
 			
 			List<Resource> resultList = query.getResultList();
-			return resultList;
+			for(Resource r : resultList){
+				ResourcesSet.add(r);
+			}
+			return ResourcesSet;
 	}
 	
 	public void addSkills(int resourceId,int skillId){
@@ -292,7 +309,19 @@ public class ResourceService implements ResourceServiceLocale  {
 	
 	
 	
-	
+	public void ResourceToProject(int resourceId,int projetId){
+		Resource r = em.find(Resource.class,resourceId);
+		for(Mandate r1 : r.getListMandats()){
+			if (r1.getDate_start_mandate().after(r1.getDate_end_mandate())){
+				
+			}
+			
+		}
+		Projet s = em.find(Projet.class, projetId);
+		s.setRessource(em.find(Resource.class, resourceId));
+		
+		
+	}
 	
 
 	

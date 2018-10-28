@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -74,7 +75,7 @@ public class ResourceService  {
 	@POST
 	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
 	@Path("/getResources")
-	public List<Resource> DisplayResources() {
+	public Set<Resource> DisplayResources() {
 		return ResourceServiceLocal.DisplayResource();
 		
 	}
@@ -82,7 +83,7 @@ public class ResourceService  {
 	@POST
 	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
 	@Path("/filterResources")
-	public List<Resource> FilterResourceByName(@QueryParam(value="lastname") String name,@QueryParam(value="firstname") String firstname
+	public Set<Resource> FilterResourceByName(@QueryParam(value="lastname") String name,@QueryParam(value="firstname") String firstname
 			,@QueryParam(value="seniority") int seniority,@QueryParam(value="sector") String sector
 			,@QueryParam(value="profil") String profil,@QueryParam(value="contractype") String contractype,
 			@QueryParam(value="state") String state,@QueryParam(value="region") String region){

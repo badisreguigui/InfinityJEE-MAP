@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Entity implementation class for Entity: Projet
  *
@@ -33,6 +35,10 @@ public class Projet implements Serializable {
 	
 	@OneToOne(mappedBy="project")
 	private ResourceRequest resourceRequest;
+	
+	@ManyToOne
+	//@JsonProperty("listResourcess")
+	private Resource ressource;
 	
 	
 	public ResourceRequest getResourceRequest() {
@@ -77,7 +83,14 @@ public class Projet implements Serializable {
 	}
 	public void setListSkills(List<Skills> listSkills) {
 		this.listSkills = listSkills;
+	}
+	public Resource getRessource() {
+		return ressource;
+	}
+	public void setRessource(Resource ressource) {
+		this.ressource = ressource;
 	}   
+	
 	
    
 }

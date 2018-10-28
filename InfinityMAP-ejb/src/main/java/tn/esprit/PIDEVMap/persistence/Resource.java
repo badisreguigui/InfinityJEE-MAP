@@ -2,6 +2,7 @@ package tn.esprit.PIDEVMap.persistence;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -58,26 +59,22 @@ public class Resource implements Serializable {
 
 	@OneToMany(mappedBy="ressource",fetch=FetchType.EAGER)
 	//@JsonProperty("listSkills")
-	private List<Skills> listSkills;
+	private Set<Skills> listSkills;
 	
-	//@JsonManagedReference(value="resource")
+	@JsonManagedReference(value="resource")
 
-	/*@OneToMany(mappedBy="resource",cascade=CascadeType.PERSIST)
+	@OneToMany(mappedBy="resource",cascade=CascadeType.PERSIST,fetch=FetchType.EAGER)
 	//@JsonIgnore
-	private List<Mandate>ListMandats;*/
+	private Set<Mandate>ListMandats;
 	
   
 	
-	/*@ManyToMany(mappedBy="listResources",fetch= FetchType.LAZY)
-	@JsonProperty("listProjets")
-	private List<Projet> listProjets;
+	@OneToMany(mappedBy="ressource",cascade=CascadeType.PERSIST,fetch=FetchType.EAGER)
+	//@JsonProperty("listProjets")
+	private Set<Projet> listProjets;
 
 	
-	 	@OneToMany(mappedBy="resource",fetch= FetchType.LAZY)
-	 	@JsonProperty("listMandats")
-		private List<Mandate> listMandats;
-
-	 	@OneToMany(mappedBy="resource",fetch= FetchType.LAZY)
+	 	/*@OneToMany(mappedBy="resource",fetch= FetchType.LAZY)
 	 	@JsonProperty("listVacations")
 		private List<Vacation> listVacations;*/
 	 	
@@ -136,7 +133,7 @@ public class Resource implements Serializable {
 
 
 	public Resource(int id, String lastname, String firstname, String picture, int seniority, String sector,
-			String profil, ContractType contractype, State state, String region, float rating, List<Skills> listSkills
+			String profil, ContractType contractype, State state, String region, float rating, Set<Skills> listSkills
 			) {
 		super();
 		this.id = id;
@@ -252,12 +249,12 @@ public class Resource implements Serializable {
 
 
 	@JsonManagedReference
-	public List<Skills> getListSkills() {
+	public Set<Skills> getListSkills() {
 		return listSkills;
 	}
 
 
-	public void setListSkills(List<Skills> listSkills) {
+	public void setListSkills(Set<Skills> listSkills) {
 		this.listSkills = listSkills;
 	}
 
@@ -272,6 +269,26 @@ public class Resource implements Serializable {
 	}
 
 
+	public Set<Mandate> getListMandats() {
+		return ListMandats;
+	}
+
+
+	public void setListMandats(Set<Mandate> listMandats) {
+		ListMandats = listMandats;
+	}
+
+
+	public Set<Projet> getListProjets() {
+		return listProjets;
+	}
+
+
+	public void setListProjets(Set<Projet> listProjets) {
+		this.listProjets = listProjets;
+	}
+
+	
 	
 	
 
