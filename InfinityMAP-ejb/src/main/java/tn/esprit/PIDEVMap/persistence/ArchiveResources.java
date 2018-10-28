@@ -19,7 +19,7 @@ public class ArchiveResources implements Serializable{
 	protected String lastname;
 	protected String firstname;
 	protected String picture;
-	protected String seniority;
+	protected int seniority;
 	protected String sector;
 	protected String profil;
 	@Enumerated
@@ -35,7 +35,7 @@ public class ArchiveResources implements Serializable{
 	 
 	
 
-	public ArchiveResources(String lastname, String firstname, String picture, String seniority, String sector,
+	public ArchiveResources(String lastname, String firstname, String picture, int seniority, String sector,
 				String profil, ContractType contractype, State state, String region, float rating) {
 			super();
 			this.lastname = lastname;
@@ -78,10 +78,10 @@ public class ArchiveResources implements Serializable{
 	public void setPicture(String picture) {
 		this.picture = picture;
 	}
-	public String getSeniority() {
+	public int getSeniority() {
 		return seniority;
 	}
-	public void setSeniority(String seniority) {
+	public void setSeniority(int seniority) {
 		this.seniority = seniority;
 	}
 	public String getSector() {

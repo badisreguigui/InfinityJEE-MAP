@@ -1,5 +1,6 @@
 package tn.esprit.PIDEVMap.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateful;
@@ -21,6 +22,19 @@ public class SkillService implements SkillServiceLocale {
 	@Override
 	public int addSkill(Skills s) {
 		em.persist(s);
+		List<Skills> listSkills = new ArrayList<>();
+		TypedQuery<Skills> query1 = em.createQuery("Select s from Skills s where s.value = :name",Skills.class)
+				.setParameter("name", s.getValue());
+		listSkills = query1.getResultList();
+		for(Skills s1 : listSkills)
+		if(s1.getValue().equals(s.getValue())){
+			System.out.println(s1.getValue());
+			System.out.println(s.getValue());
+			s.setSkillRate(s1.getSkillRate());
+			em.flush();
+		}
+		
+		
 		return s.getId();
 	}
 
@@ -54,9 +68,11 @@ public class SkillService implements SkillServiceLocale {
 	}
 
 	@Override
-	public int ResourcesNumberBySkill(int skillId) {
-		// TODO Auto-generated method stub
-		return 0;
+	public List<Object[]> ResourcesNumberBySkill() {
+		List<Object[]> ResourcesNumberBySkillSql;
+		TypedQuery<Object[]> query = em.createQuery("SELECT s.value,count(s.value) from Skills s where s.ressource.id <> '' group by s.value order by count(s) desc ",Object[].class);
+		return ResourcesNumberBySkillSql=query.getResultList();
+		
 	}
 
 }

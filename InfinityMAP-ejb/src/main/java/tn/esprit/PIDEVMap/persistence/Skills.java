@@ -12,6 +12,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class Skills implements Serializable {
 	@Id
@@ -24,17 +27,19 @@ public class Skills implements Serializable {
 	/*@ManyToMany(mappedBy="listSkills")
 	private List<Projet> listProjects;*/
 	
+	@ManyToOne
+	@JsonProperty("listResources")
+	private Resource ressource;
 	
-	@ManyToMany(mappedBy="listSkills")
-	private List<Resource> listResources;
 
 
-	public Skills(String value, float skillRate, List<Resource> listResources) {
+
+
+	public Skills(String value, float skillRate, Resource ressource) {
 		super();
 		this.value = value;
 		this.skillRate = skillRate;
-		//this.listProjects = listProjects;
-		this.listResources = listResources;
+		this.ressource = ressource;
 	}
 
 
@@ -74,18 +79,19 @@ public class Skills implements Serializable {
 	}
 
 
-
-
-
-	public List<Resource> getListResources() {
-		return listResources;
+	@JsonBackReference
+	public Resource getRessource() {
+		return ressource;
 	}
 
 
-	public void setListResources(List<Resource> listResources) {
-		this.listResources = listResources;
+	public void setRessource(Resource ressource) {
+		this.ressource = ressource;
 	}
-	
+
+
+
+
 	
 	
 	

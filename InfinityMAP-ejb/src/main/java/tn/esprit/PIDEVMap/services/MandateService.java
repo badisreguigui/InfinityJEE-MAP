@@ -58,7 +58,7 @@ public class MandateService implements MandateServiceRemote {
 		mandat.setResource(r);
 		List<Mandate> mandates = new ArrayList<>();
 		mandates.add(mandat);
-		r.setListMandats(mandates);
+		//r.setListMandats(mandates);
 		request.setListMandats(mandates);
 		em.persist(r);
 		em.persist(request);
@@ -122,10 +122,10 @@ public class MandateService implements MandateServiceRemote {
 		TypedQuery<Resource> query = em.createQuery("select  r from Resource r where r.id=:ResourceId", Resource.class)
 				.setParameter("ResourceId", ResourceId);
 		Set<Mandate> mandates=new HashSet<>();
-		for(Mandate m:query.getSingleResult().getListMandats()){
+		/*for(Mandate m:query.getSingleResult().getListMandats()){
 			mandates.add(m);
 		}
-		
+		*/
 	
 		return mandates;
 	}
@@ -172,7 +172,7 @@ public class MandateService implements MandateServiceRemote {
 		float facture = 0;
 		int nbreHeures = 0;
 		Resource resource = em.find(Resource.class, ResourceId);
-		for (Mandate m : resource.getListMandats()) {
+		/*for (Mandate m : resource.getListMandats()) {
 			if (m.getMandateId() == mandateId)
 
 			{
@@ -182,7 +182,7 @@ public class MandateService implements MandateServiceRemote {
 				facture = (float) nbreJours * resource.getSalaireHoraire();
 				m.setFacture(facture);
 			}
-		}
+		}*/
 		return facture;
 	}
 
@@ -191,12 +191,12 @@ public class MandateService implements MandateServiceRemote {
 
 		float factureTotale = 0;
 		Resource resource = em.find(Resource.class, ResourceId);
-		for (Mandate m : resource.getListMandats()) {
+		/*for (Mandate m : resource.getListMandats()) {
 
 			factureTotale += m.getFacture();
 			resource.setTotalFactureMandat(factureTotale);
 
-		}
+		}*/
 		return factureTotale;
 	}
 

@@ -13,7 +13,7 @@ public interface SkillServiceLocale {
 	public void DeleteSkill(int skillId);
 	public Skills updateSkill(Skills s,int skillId);
 	public List<Skills> GetSkills();
-	public int ResourcesNumberBySkill(int skillId);
+	public List<Object[]> ResourcesNumberBySkill() ;
 	
 	
 	

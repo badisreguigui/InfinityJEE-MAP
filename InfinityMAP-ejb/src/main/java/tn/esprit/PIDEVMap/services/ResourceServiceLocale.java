@@ -1,6 +1,8 @@
 package tn.esprit.PIDEVMap.services;
 
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -17,7 +19,11 @@ public interface ResourceServiceLocale {
 	public void InsertArchive(int resourceId);
 	public void affecterResourceAProjet(int resourceId, int projetId);
 	public List<Resource> DisplayResource();
-	public List<Resource> FilterByName(String name,String firstname,String seniority,String sector,String profil,
+	public List<Resource> FilterByName(String name,String firstname,int seniority,String sector,String profil,
 			String contractype,String state,String region);
 	public void addSkills(int resourceId,int skillId);
+	public void addSkillResourceRating(int idRessource);
+	public float CalculRating(int idRessource);
+	public Resource updateRating(int idResource);
+	public String holidayCalendar(String d) throws ParseException;
 }

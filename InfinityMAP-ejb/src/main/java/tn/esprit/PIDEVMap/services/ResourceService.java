@@ -1,7 +1,12 @@
 package tn.esprit.PIDEVMap.services;
 
 
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.ejb.Stateful;
@@ -21,6 +26,7 @@ import javax.ws.rs.Path;
 
 import tn.esprit.PIDEVMap.persistence.ArchiveResources;
 import tn.esprit.PIDEVMap.persistence.ContractType;
+import tn.esprit.PIDEVMap.persistence.LigneSkill;
 import tn.esprit.PIDEVMap.persistence.Projet;
 import tn.esprit.PIDEVMap.persistence.Resource;
 import tn.esprit.PIDEVMap.persistence.Skills;
@@ -69,7 +75,7 @@ public class ResourceService implements ResourceServiceLocale  {
 		if(r.getContractype()!=null){
 			r1.setContractype(r.getContractype());
 		}
-		if(r.getSeniority()!=null){
+		if(r.getSeniority()!=0){
 			r1.setSeniority(r.getSeniority());
 		}
 		if(r.getState()!=null){
@@ -99,16 +105,15 @@ public class ResourceService implements ResourceServiceLocale  {
 		em.find(Projet.class, projetId).getListResources().add(em.find(Resource.class, resourceId));
 		
 	}
-
 	@Override
 	public List<Resource> DisplayResource() {
 		List<Resource> allResources;
+		
 		TypedQuery<Resource> query = em.createQuery("Select r from Resource r",Resource.class);
 		allResources=query.getResultList();
 		return allResources;
 	}
-	
-	public List<Resource> FilterByName(String name,String firstname,String seniority,String sector,String profil,
+	public List<Resource> FilterByName(String name,String firstname,int seniority,String sector,String profil,
 			String contractype,String state,String region){
 		
 			CriteriaBuilder builder = em.getCriteriaBuilder();
@@ -117,7 +122,7 @@ public class ResourceService implements ResourceServiceLocale  {
 			Root<Resource> root = criteriaQuery.from(Resource.class);
 			List<Predicate> predicates = new ArrayList<Predicate>();
 
-		    //Adding predicates in case of parameter not being null
+		    //Adding predicates in case of parameter not being null 
 		    if (name != null) {
 		        predicates.add(
 		        		builder.equal(root.get("lastname"), name));
@@ -126,7 +131,7 @@ public class ResourceService implements ResourceServiceLocale  {
 		        predicates.add(
 		        		builder.equal(root.get("firstname"), firstname));
 		    }
-		    if (seniority != null) {
+		    if (seniority != 0) {
 		        predicates.add(
 		        		builder.equal(root.get("seniority"), seniority));
 		    }
@@ -162,9 +167,131 @@ public class ResourceService implements ResourceServiceLocale  {
 	public void addSkills(int resourceId,int skillId){
 		Resource r = em.find(Resource.class,resourceId);
 		Skills s = em.find(Skills.class, skillId);
-		r.getListSkills().add(s);
-		s.getListResources().add(r);
+		s.setRessource(em.find(Resource.class, resourceId));
+		/*List<Skills> listskills1 = new ArrayList<>();
+		for(Skills s1 : r.getListSkills()){
+			listskills1.add(s1);
+		}*/
+		//r.getListSkills().add(s);
+		/*for(Skills s2 : listskills1){
+			System.out.println(s2.getValue());
+			if(s2==s){
+				System.out.println("Already there :)");
+				r.getListSkills().remove(s);
+			}
+
+
+		}*/
+		
+		
 	}
+
+	@Override
+	public void addSkillResourceRating(int idRessource) {
+		List<LigneSkill> allLigneSkillValues;
+		Resource r = em.find(Resource.class, idRessource);
+		TypedQuery<LigneSkill> query = em.createQuery("Select l from LigneSkill l WHERE l.idResource=:id",LigneSkill.class)
+				.setParameter("id", idRessource);
+		allLigneSkillValues=query.getResultList();
+		for( Skills s : r.getListSkills()){
+			LigneSkill skillIndi= new LigneSkill();
+			System.out.println(s.getValue());
+			skillIndi.setValue(s.getValue());
+			skillIndi.setIdResource(idRessource);
+			em.persist(skillIndi);
+			for(LigneSkill l : allLigneSkillValues){
+				if(l.getValue().equals(s.getValue())){
+					System.out.println("Already there baby");
+					em.remove(l);
+				}
+			}
+				
+		}
+			
+	}
+	
+	/*Resource r = em.find(Resource.class, idRessource);
+	List<String> allLigneSkillValues;
+	
+	TypedQuery<String> query = em.createQuery("Select l.value from LigneSkill l WHERE l.idResource=:id",String.class)
+			.setParameter("id", idRessource);
+	allLigneSkillValues=query.getResultList();
+	for( Skills s : r.getListSkills()){
+		for(String value : allLigneSkillValues){
+			if(value.equals(s.getValue())){
+				System.out.println("already there");
+			}
+			else{
+				LigneSkill skillIndi= new LigneSkill();
+				System.out.println(s.getValue());
+				skillIndi.setValue(s.getValue());
+				skillIndi.setIdResource(idRessource);
+				em.persist(skillIndi);
+			}
+		}
+		
+	}*/
+
+	@Override
+	public float CalculRating(int idRessource) {
+		float rate=0;
+		List<LigneSkill> listeskill= new ArrayList<>();
+		TypedQuery<LigneSkill> query = em.createQuery("Select l from LigneSkill l WHERE l.idResource=:id",LigneSkill.class)
+				.setParameter("id", idRessource);
+		listeskill=query.getResultList();
+		for (LigneSkill l: listeskill)
+		{
+			TypedQuery<Skills> query1 = em.createQuery("Select s from Skills s where s.value = :name",Skills.class)
+					.setParameter("name", l.getValue());
+			Skills s = query1.getSingleResult();
+			rate+=s.getSkillRate();
+		}
+		float avg = 0; 
+		if(listeskill.size() != 0){
+		avg = rate / listeskill.size(); }
+		return avg; 
+	}
+
+	@Override
+	public Resource updateRating(int idResource) {
+		Resource r1 = em.find(Resource.class, idResource);
+		float rating = CalculRating(idResource) ;
+		r1.setRating(rating);
+		return r1;
+	}
+
+	@Override
+	public String holidayCalendar(String d) throws ParseException {
+		int workstate=0;
+		String date = null;
+		Calendar holidays = Calendar.getInstance();
+		List<Resource> allResources;
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		Date d2=dateFormat.parse(d);
+		holidays.setTime(d2);
+		System.out.println(d2);
+		System.out.println(holidays.getTime());
+		//DateFormat dateFormat1 = new SimpleDateFormat("yyyy/mm/dd HH:mm:ss");
+		if(holidays.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || holidays.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY || (holidays.get(Calendar.MONTH) == Calendar.JANUARY
+				&& holidays.get(Calendar.DAY_OF_MONTH) == 1) || (holidays.get(Calendar.MONTH) == Calendar.MARCH
+				&& holidays.get(Calendar.DAY_OF_MONTH) == 20)){
+			System.out.println(holidays.get(holidays.DAY_OF_WEEK));
+			workstate=1;
+			date = "HOLYDAAAAAAAAAAAAAAAYSSSSSS!!!!!!!!!!!!!!!!";
+		}
+		else{
+			System.out.println(holidays.DAY_OF_WEEK);
+			workstate=0;
+			date = "WORKKKKKKKKKKKKKKKKKKKK";
+		}
+		int query1 = em.createQuery(
+				   "UPDATE Resource SET holiday=:workstate").setParameter("workstate", workstate).executeUpdate();
+		
+		return date;
+	}
+	
+	
+	
 	
 	
 
