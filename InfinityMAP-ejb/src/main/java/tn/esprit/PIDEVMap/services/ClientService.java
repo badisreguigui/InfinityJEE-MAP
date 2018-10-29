@@ -45,8 +45,7 @@ public class ClientService implements ClientServiceLocal{
 		{
 			c.setNom(client.getNom());
 		}
-		/*
-		 * if(client.getLogo() != null)	
+		if(client.getLogo() != null)	
 		{
 			c.setLogo(client.getLogo());
 		}
@@ -57,9 +56,8 @@ public class ClientService implements ClientServiceLocal{
 		if(client.getTypeClient() != null)
 		{
 			c.setTypeClient(client.getTypeClient());
-		}*/
+		}
 		
-		entityManager.flush();
 		return c;
 	}
 	

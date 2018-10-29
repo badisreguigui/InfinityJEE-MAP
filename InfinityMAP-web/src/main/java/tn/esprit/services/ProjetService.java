@@ -1,11 +1,14 @@
 package tn.esprit.services;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -24,14 +27,7 @@ public class ProjetService {
 	@EJB
 	ClientServiceLocal remoteClient;
 
-	//afficher liste des projets
-    @Path("afficherAllProjets")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllProjets()
-    {
-    	return Response.status(Status.ACCEPTED).entity(remoteProjet.findAllProjets()).build()  ;
-    }
+	
 
     //ajouter projet
   		@POST
@@ -48,7 +44,7 @@ public class ProjetService {
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("affecterProjetAClient/{projetId}/{clientId}")
-	public javax.ws.rs.core.Response affecterProjetAClient(@PathParam("projetId") int  clientId,@PathParam("clientId") int projetId)
+	public javax.ws.rs.core.Response affecterProjetAClient(@PathParam("projetId") int  projetId,@PathParam("clientId") int clientId)
 	{
 		Client client=remoteClient.findClientById(clientId);
 		Projet projet=remoteProjet.findProjetById(projetId);
@@ -72,32 +68,51 @@ public class ProjetService {
 		
 		
 	}
-		
+	
+	
+	//afficher liste des projets
+    @Path("afficherAllProjets")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllProjets()
+    {
+    	return Response.status(Status.ACCEPTED).entity(remoteProjet.findAllProjets()).build()  ;
+    }
+    
 	//modifier projet
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Path("modifierProjet/{projetId}")
     public Response modifierProjet(@PathParam("projetId") int id, Projet projet) throws Exception {
+    	projet.setId(id);
+    	if(remoteProjet.findProjetById(id)== null )
+    	{
+    		 return javax.ws.rs.core.Response.ok("le projet que vous voulez modifier n'existe pas ").build();
+    	}
+    	else
+    	{	
+    		
     	
-    		projet=remoteProjet.findProjetById(id);
-    		if(projet== null )
-	    	{
-	    		 return javax.ws.rs.core.Response.ok("le client que vous voulez modifier n'existe pas ").build();
-	    	}
-	    	else
-	    	{	
-	    		System.out.println("id projet="+projet.getId());
-	    		System.out.println("statut projet="+projet.getStatut());
-	    		System.out.println("etat projet="+projet.getEtat());
-	    		if(projet.getEtat().equals("not available"))
-	    		{
-	    			return   javax.ws.rs.core.Response.ok("le projet que vous cherchez est supprimé").build();
-	    		}
+    		System.out.println("id projet= "+projet.getId());
+    		System.out.println("nom projet= "+projet.getNom());
+    		//System.out.println("logo= "+client.getLogo());
+    		//System.out.println("type client= "+client.getCategorie());
+    		//System.out.println("etat client= "+client.getEtat());
+    		if(projet.getEtat().equals("not available"))
+    		{
+    			return   javax.ws.rs.core.Response.ok("le projet que vous vous voulez modifier est supprimé").build();
+    		}
     		
     			remoteProjet.modifierProjet(projet,id);
-    			return   javax.ws.rs.core.Response.ok("projet modifié avec succes").build();
-	    	
-	    	}
+    		
+    		System.out.println("baed modfi");
+    		System.out.println("id projet= "+projet.getId());
+	    	System.out.println("nom projet= "+projet.getNom());
+	    	//System.out.println("logo= "+client.getLogo());
+	    	//System.out.println("type client= "+client.getCategorie());
+	    	//System.out.println("etat client= "+client.getEtat());
+    		 return   javax.ws.rs.core.Response.ok("projet modifié avec succes").build();
+    	}
     }
     
     
@@ -172,6 +187,9 @@ public class ProjetService {
     @Path("statProjet/{idclient}")
     public Response statProjet(@PathParam("idclient") int idclient)
     {
-    	return Response.status(Status.ACCEPTED).entity(remoteProjet.statProjet(idclient)+"%").build()  ;
+    	Client client=remoteClient.findClientById(idclient);
+    	return Response.status(Status.ACCEPTED).entity("les projets du client "+client.getNom()+" represente "+remoteProjet.statProjet(idclient)+"% du nombre de projets total").build()  ;
     }
+    
+   
 }

@@ -1,11 +1,13 @@
 package tn.esprit.PIDEVMap.services;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import tn.esprit.PIDEVMap.persistence.Projet;
+import tn.esprit.PIDEVMap.persistence.*;
 
 @Stateless
 public class ProjetService implements ProjetServiceLocal{
@@ -28,6 +30,11 @@ public class ProjetService implements ProjetServiceLocal{
 			{
 				p.setStatut(projet.getStatut());
 			}
+		else
+			if(projet.getNom() != null)
+		{
+			p.setNom(projet.getNom());
+		}
 		
 		return p;
 		
@@ -92,4 +99,7 @@ public class ProjetService implements ProjetServiceLocal{
 		return (NbrPRojetParClient(idclient)*100)/NbrProjetsTotal();
 		
 	}
+	
+	
+	
 }

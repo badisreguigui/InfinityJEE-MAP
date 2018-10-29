@@ -1,5 +1,8 @@
 package tn.esprit.services;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.GET;
@@ -13,9 +16,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import tn.esprit.PIDEVMap.persistence.Client;
-import tn.esprit.PIDEVMap.persistence.Projet;
 import tn.esprit.PIDEVMap.services.ClientServiceLocal;
-import tn.esprit.PIDEVMap.services.ProjetServiceLocal;
 
 @Path("/ClientService")
 @RequestScoped
@@ -30,16 +31,31 @@ public class ClientService {
 		public javax.ws.rs.core.Response ajouterClient(Client e)
 		{
 			//test sur le nom de limage 
-			String pattern = "[[C-Z]*:/[a-zA-Z0-9]*/[a-zA-Z0-9]*/]*[[a-zA-Z0-9]+.[jpg|jpa|png|jpeg]]*";
-	        String logo = e.getLogo();
+			
+			Pattern p = Pattern.compile("([^\\s]+(.jpg|.png|.gif|.bmp))");
+			String logo = e.getLogo();
+			Matcher m = p.matcher(logo);
+			if (m.find())
+			{
+			  System.out.printf("The filename is '%s'%n", m.group(1));
+			  remote.ajouterClient(e);
+				return javax.ws.rs.core.Response.ok("ajoute avec succes").build();
+			}
+			else 
+			{
+	            System.out.println("NO MATCH");
+	            return javax.ws.rs.core.Response.status(Status.NOT_ACCEPTABLE).build();
+	        }
+			/*String pattern = " (([\\s])+(.png|.jpg|.gif))";
+	        
+	        System.out.println(logo);
 	        if (logo.matches(pattern)) {
 	            System.out.println(logo + " matches \"" + pattern + "\"");
 	        } else {
 	            System.out.println("NO MATCH");
 	            return javax.ws.rs.core.Response.status(Status.NOT_ACCEPTABLE).build();
-	        }
-			remote.ajouterClient(e);
-			return javax.ws.rs.core.Response.ok("ajoute avec succes").build();
+	        }*/
+			
 		}
 		
 	
@@ -49,15 +65,15 @@ public class ClientService {
 	    @Produces(MediaType.APPLICATION_JSON)
 	    @Path("modifierClient/{clientId}")
 	    public javax.ws.rs.core.Response updateStudent(@PathParam("clientId") int id, Client client) throws Exception {
-	    	client=remote.findClientById(id);
-	    	if(client== null )
+	    	client.setId(id);
+	    	if(remote.findClientById(id)== null )
 	    	{
 	    		 return javax.ws.rs.core.Response.ok("le client que vous voulez modifier n'existe pas ").build();
 	    	}
 	    	else
 	    	{	
 	    		
-	    		client.setId(id);
+	    	
 	    		System.out.println("id client= "+client.getId());
 	    		System.out.println("nom client= "+client.getNom());
 	    		//System.out.println("logo= "+client.getLogo());
@@ -88,7 +104,11 @@ public class ClientService {
 	    @Produces(MediaType.APPLICATION_JSON)
 	    public Response supprimerClient(@PathParam("clientId") int idclient, Client client) throws Exception {
 	    	client=remote.findClientById(idclient);
-	    	 System.out.println(client.getEtat());
+	    	 if(client==null)
+	    	 {
+	    		 return javax.ws.rs.core.Response.ok("le client que vous voulez modifier n'existe pas ").build();
+	    	 }
+	    	 else
 	    	 if(client.getEtat().equals("not available"))
 	    	 {
 	    		 return javax.ws.rs.core.Response.ok("client deja supprime").build();
@@ -107,6 +127,7 @@ public class ClientService {
 	    @Produces(MediaType.APPLICATION_JSON)
 	    public Response getAllClients()
 	    {
+	    
 	    	return Response.status(Status.ACCEPTED).entity(remote.findAllClients()).build()  ;
 	    }
 	    

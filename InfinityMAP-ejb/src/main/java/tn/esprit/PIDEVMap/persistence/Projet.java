@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -27,12 +28,15 @@ public class Projet implements Serializable {
 	private String etat="available";
 	
 	@ManyToOne
+	@JsonIgnore
 	private Client client;
 	
 	@ManyToMany
+	@JsonIgnore
 	private List<Resource> listResources;
 
 	@ManyToMany
+	@JsonIgnore
 	private List<Skills> listSkills;
 	
 	@OneToOne(mappedBy="project")
@@ -40,6 +44,7 @@ public class Projet implements Serializable {
 	
 	@ManyToOne
 	//@JsonProperty("listResourcess")
+	@JsonIgnore
 	private Resource ressource;
 	
 	
