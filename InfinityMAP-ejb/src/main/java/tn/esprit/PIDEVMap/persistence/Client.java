@@ -22,6 +22,7 @@ public class Client implements Serializable {
 	private String logo;
 	private CategorieClient categorie;
 	private TypeClient typeClient;
+	private String etat="available";
 	private static final long serialVersionUID = 1L;
 	
 	@OneToMany(mappedBy="client",cascade=CascadeType.PERSIST)
@@ -92,6 +93,12 @@ public class Client implements Serializable {
 	public String toString() {
 		return "Client [id=" + id + ", nom=" + nom + ", logo=" + logo + ", categorie=" + categorie + ", typeClient="
 				+ typeClient + ", projets=" + projets + "]";
+	}
+	public String getEtat() {
+		return etat;
+	}
+	public void setEtat(String etat) {
+		this.etat = etat;
 	}
    
 }

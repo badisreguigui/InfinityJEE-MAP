@@ -23,6 +23,8 @@ public class Projet implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	private TypeProjet statut;
+	private String nom;
+	private String etat="available";
 	
 	@ManyToOne
 	private Client client;
@@ -89,6 +91,18 @@ public class Projet implements Serializable {
 	}
 	public void setRessource(Resource ressource) {
 		this.ressource = ressource;
+	}
+	public String getNom() {
+		return nom;
+	}
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+	public String getEtat() {
+		return etat;
+	}
+	public void setEtat(String etat) {
+		this.etat = etat;
 	}   
 	
 	
