@@ -11,8 +11,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+
+
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Vacation implements Serializable {
 
 	@Id
@@ -23,6 +29,7 @@ public class Vacation implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date dateFin;
 	@ManyToOne
+	@JsonIgnore
 	private Resource resource;
 	
 	public Date getDateDebut() {

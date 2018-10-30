@@ -49,14 +49,12 @@ public class MandateService {
 	public String addMandate(@QueryParam(value = "requestId")int requestId){
 		return mandate.affecterMandateAResource(requestId);
 	}
-    @Secured
+    
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("ListeMandats")
 	public List<Mandate>afficherListesMandats(){
-      User LoggedPerson=local.getLoggedPerson();
-    	if(LoggedPerson.getRole().equals("Admin"))
-    		return null;
+     
 		return mandate.afficherListesMandats();
 	}
 	@GET
@@ -116,10 +114,10 @@ public class MandateService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/UpdateMandat")
-	public Mandate updateMandat(Mandate m,@QueryParam(value = "mandateId")int mandatId) {
-		m.setMandateId(mandatId);
+	public Mandate updateMandat(Mandate m,@QueryParam(value = "mandateId")int mandateId) {
+	m.setMandateId(mandateId);
 		
-		return mandate.modifierMandat(m,mandatId);
+		return mandate.modifierMandat(m,mandateId);
 	}
 }
 

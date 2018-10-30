@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
+import javax.ejb.Local;
+
 import tn.esprit.PIDEVMap.persistence.Mandate;
 import tn.esprit.PIDEVMap.persistence.Resource;
 
-
+@Local
 public interface MandateServiceRemote {
 	public String affecterMandateAResource(int requestId);
 	public List<Mandate>afficherListesMandats();

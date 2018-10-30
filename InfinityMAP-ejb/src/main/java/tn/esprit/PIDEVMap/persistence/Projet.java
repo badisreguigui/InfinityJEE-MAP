@@ -6,11 +6,9 @@ import java.util.List;
 
 import javax.persistence.*;
 
-<<<<<<< HEAD
-=======
 import com.fasterxml.jackson.annotation.JsonIgnore;
->>>>>>> d431fbd5a9c47604561e7f82ab187bdbcab44095
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 /**
  * Entity implementation class for Entity: Projet
@@ -28,12 +26,12 @@ public class Projet implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	private TypeProjet statut;
-<<<<<<< HEAD
+
 	private String name;
-=======
+
 	private String nom;
 	private String etat="available";
->>>>>>> d431fbd5a9c47604561e7f82ab187bdbcab44095
+
 	
 	public String getName() {
 		return name;
@@ -55,7 +53,7 @@ public class Projet implements Serializable {
 	
 	@OneToOne(mappedBy="project")
 	private ResourceRequest resourceRequest;
-<<<<<<< HEAD
+
 	@JsonProperty("projetStartDate")
 	@Temporal(TemporalType.DATE)
 	private Date projetStartDate;
@@ -63,14 +61,13 @@ public class Projet implements Serializable {
 	@JsonProperty("projetEndDate")
 	@Temporal(TemporalType.DATE)
 	private Date projetEndDate;
-=======
+
 	
 	@ManyToOne
 	//@JsonProperty("listResourcess")
 	@JsonIgnore
 	private Resource ressource;
 	
->>>>>>> d431fbd5a9c47604561e7f82ab187bdbcab44095
 	
 	public ResourceRequest getResourceRequest() {
 		return resourceRequest;
@@ -115,7 +112,7 @@ public class Projet implements Serializable {
 	public void setListSkills(List<Skills> listSkills) {
 		this.listSkills = listSkills;
 	}
-<<<<<<< HEAD
+
 	public Date getProjetStartDate() {
 		return projetStartDate;
 	}
@@ -126,8 +123,8 @@ public class Projet implements Serializable {
 		return projetEndDate;
 	}
 	public void setProjetEndDate(Date projetEndDate) {
-		this.projetEndDate = projetEndDate;
-=======
+		this.projetEndDate = projetEndDate;}
+
 	public Resource getRessource() {
 		return ressource;
 	}
@@ -145,7 +142,7 @@ public class Projet implements Serializable {
 	}
 	public void setEtat(String etat) {
 		this.etat = etat;
->>>>>>> d431fbd5a9c47604561e7f82ab187bdbcab44095
+
 	}   
 	
 	

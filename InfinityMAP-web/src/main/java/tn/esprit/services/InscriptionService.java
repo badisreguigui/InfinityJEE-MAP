@@ -20,6 +20,8 @@ public class InscriptionService {
 	
 	@EJB
 	InscriptionServiceRemote inscription;
+	
+	
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_JSON)

@@ -3,6 +3,7 @@ package tn.esprit.PIDEVMap.persistence;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -35,7 +36,7 @@ public class HistoriqueAssignationMandat implements Serializable {
 	private String etatMandat;
 	@JsonManagedReference
 	@OneToMany(mappedBy="historique",fetch=FetchType.EAGER)
-	private List<Mandate>mandates;
+	private Set<Mandate>mandates;
 	public int getHistoriqueId() {
 		return HistoriqueId;
 	}
@@ -50,10 +51,10 @@ public class HistoriqueAssignationMandat implements Serializable {
 	public void setEtatMandat(String etatMandat) {
 		this.etatMandat = etatMandat;
 	}
-	public List<Mandate> getMandates() {
+	public Set<Mandate> getMandates() {
 		return mandates;
 	}
-	public void setMandates(List<Mandate> mandates) {
+	public void setMandates(Set<Mandate> mandates) {
 		this.mandates = mandates;
 	}
 	

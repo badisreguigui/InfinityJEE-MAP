@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -26,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 
 @Entity
-
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Resource implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -45,6 +46,7 @@ public class Resource implements Serializable {
 	protected String profil;
 	@Enumerated
 	@JsonProperty("contractype")
+	@JsonIgnore
 	protected ContractType contractype;
 	@Enumerated
 	@JsonProperty("state")
@@ -55,7 +57,7 @@ public class Resource implements Serializable {
 	protected float rating;
 	private Float salaireHoraire;
 	private Float TotalFactureMandat;
-<<<<<<< HEAD
+
 	private String ipAdress;
     private int yearsOfExperience;
 	public int getYearsOfExperience() {
@@ -66,58 +68,6 @@ public class Resource implements Serializable {
 	public String getIpAdress() {
 		return ipAdress;
 	}
-
-
-	public void setIpAdress(String ipAdress) {
-		this.ipAdress = ipAdress;
-	}
-
-
-	public void setYearsOfExperience(int yearsOfExperience) {
-		this.yearsOfExperience = yearsOfExperience;
-	}
-
-=======
-	private int holiday;
->>>>>>> d431fbd5a9c47604561e7f82ab187bdbcab44095
-
-	@OneToMany(mappedBy="ressource",fetch=FetchType.EAGER)
-	//@JsonProperty("listSkills")
-	private Set<Skills> listSkills;
-	
-	@JsonManagedReference(value="resource")
-
-	@OneToMany(mappedBy="resource",cascade=CascadeType.PERSIST,fetch=FetchType.EAGER)
-	//@JsonIgnore
-	private Set<Mandate>ListMandats;
-	
-  
-	
-	@OneToMany(mappedBy="ressource",cascade=CascadeType.PERSIST,fetch=FetchType.EAGER)
-	//@JsonProperty("listProjets")
-	private Set<Projet> listProjets;
-
-	
-<<<<<<< HEAD
-	 	@OneToMany(mappedBy="resource",fetch= FetchType.LAZY)
-	 	@JsonProperty("listMandats")
-		private List<Mandate> listMandats;
-*/
-	 	@OneToMany(mappedBy="resource",fetch= FetchType.LAZY)
-=======
-	 	/*@OneToMany(mappedBy="resource",fetch= FetchType.LAZY)
->>>>>>> d431fbd5a9c47604561e7f82ab187bdbcab44095
-	 	@JsonProperty("listVacations")
-		private List<Vacation> listVacations;
-	 	
-	public List<Vacation> getListVacations() {
-			return listVacations;
-		}
-
-
-		public void setListVacations(List<Vacation> listVacations) {
-			this.listVacations = listVacations;
-		}
 
 
 	public Float getSalaireHoraire() {
@@ -139,15 +89,53 @@ public class Resource implements Serializable {
 		TotalFactureMandat = totalFactureMandat;
 	}
 
-	/*@JsonManagedReference
-	public List<Mandate> getListMandats() {
+
+	public Set<Vacation> getVacation() {
+		return Vacation;
+	}
+
+
+	public void setVacation(Set<Vacation> vacation) {
+		Vacation = vacation;
+	}
+
+
+
+	public void setIpAdress(String ipAdress) {
+		this.ipAdress = ipAdress;
+	}
+
+
+	public void setYearsOfExperience(int yearsOfExperience) {
+		this.yearsOfExperience = yearsOfExperience;
+	}
+
+
+	private int holiday;
+
+@JsonIgnore
+	@OneToMany(mappedBy="ressource")
+	//@JsonProperty("listSkills")
+	private Set<Skills> listSkills;
+@JsonIgnore
+	@JsonManagedReference(value="resource")
+    @OneToMany(mappedBy="resource",cascade=CascadeType.PERSIST,fetch=FetchType.EAGER)
+	private Set<Mandate>ListMandats;
+	
+@JsonIgnore
+	
+	@OneToMany(mappedBy="ressource",cascade=CascadeType.PERSIST)
+	//@JsonProperty("listProjets")
+	private Set<Projet> listProjets;
+
+	public Set<Mandate> getListMandats() {
 		return ListMandats;
 	}
 
 
-	public void setListMandats(List<Mandate> listMandats) {
-		ListMandats = listMandats;
-	}*/
+	public void setListMandats(Set<Mandate> ListMandats) {
+		ListMandats = ListMandats;
+	}
 
 
 	public Resource() {
@@ -171,6 +159,14 @@ public class Resource implements Serializable {
 		this.region = region;
 		this.rating = rating;
 	}
+	@JsonIgnore
+	@OneToMany(mappedBy="resource",fetch=FetchType.EAGER)
+	//@JsonProperty("listProjets")
+	private Set<Vacation> Vacation;
+	
+	 	/*@OneToMany(mappedBy="resource",fetch= FetchType.LAZY)
+	 	@JsonProperty("listVacations")
+		private List<Vacation> listVacations;*/
 
 
 
@@ -301,7 +297,7 @@ public class Resource implements Serializable {
 	}
 
 
-<<<<<<< HEAD
+
 	@Override
 	public String toString() {
 		return "Resource [id=" + id + ", lastname=" + lastname + ", firstname=" + firstname + ", picture=" + picture
@@ -314,7 +310,7 @@ public class Resource implements Serializable {
 
 
 	
-=======
+
 	public int getHoliday() {
 		return holiday;
 	}
@@ -325,14 +321,6 @@ public class Resource implements Serializable {
 	}
 
 
-	public Set<Mandate> getListMandats() {
-		return ListMandats;
-	}
-
-
-	public void setListMandats(Set<Mandate> listMandats) {
-		ListMandats = listMandats;
-	}
 
 
 	public Set<Projet> getListProjets() {
@@ -343,7 +331,7 @@ public class Resource implements Serializable {
 	public void setListProjets(Set<Projet> listProjets) {
 		this.listProjets = listProjets;
 	}
->>>>>>> d431fbd5a9c47604561e7f82ab187bdbcab44095
+
 
 	
 	

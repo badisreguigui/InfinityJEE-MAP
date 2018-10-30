@@ -3,6 +3,7 @@ package tn.esprit.PIDEVMap.persistence;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -69,16 +70,16 @@ public void setTitle(String title) {
 }
 	@JsonManagedReference(value="request")
 	@OneToMany(mappedBy="request",cascade=CascadeType.PERSIST,fetch=FetchType.EAGER)
-	private List<Mandate>ListMandats;
+	private Set<Mandate>ListMandats;
   
 	
 	
 
 	
-	public List<Mandate> getListMandats() {
+	public Set<Mandate> getListMandats() {
 		return ListMandats;
 	}
-	public void setListMandats(List<Mandate> listMandats) {
+	public void setListMandats(Set<Mandate> listMandats) {
 		ListMandats = listMandats;
 	}
 	public int getRequestId()

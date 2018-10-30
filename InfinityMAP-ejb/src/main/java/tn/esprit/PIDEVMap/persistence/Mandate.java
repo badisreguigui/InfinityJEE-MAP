@@ -15,13 +15,13 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 @Entity
-@JsonRootName("mandate")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Mandate implements Serializable {
 	@Id
@@ -40,6 +40,7 @@ public class Mandate implements Serializable {
 	private ResourceRequest request;
 	private float Facture;
 	@ManyToOne
+	@JsonIgnore
 	@JsonBackReference(value="resource")
 	private Resource resource;
 	@ManyToOne

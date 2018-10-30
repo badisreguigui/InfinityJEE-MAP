@@ -65,22 +65,12 @@ public class MandateService implements MandateServiceRemote {
 	@Override
 	public String affecterMandateAResource(int requestId) {
 		double minValue=0;
-		Resource r=new Resource();
+		
 		ResourceRequest request = em.find(ResourceRequest.class, requestId);
 		String profil = request.getSearchedProfile();
 		TypedQuery<Resource> query = em.createQuery("SELECT e FROM Resource e where e.profil=:profil  and e.yearsOfExperience=:years ", Resource.class)
 	    .setParameter("profil", profil).setParameter("years",request.getYearsOfExperience());
-	 List<Resource>resources= query.getResultList();
-	 for(Resource r1:resources){
-		double distance=GPS(r1.getId(),request.getProject().getClient().getId());
-		if(distance>minValue)
-		 r=r1;
-	 }
-	    
-	    
-	    for(Vacation v :r.getListVacations()){
-	    	if(v.getDateDebut().compareTo(request.getProject().getProjetEndDate())>0 || v.getDateFin().compareTo(request.getProject().getProjetStartDate())<0)
-	    			{
+	Resource r = query.getSingleResult();
 		Mandate mandat = new Mandate();
 		mandat.setNomMandat(request.getTitle());
 		mandat.setFacture(0);
@@ -88,7 +78,7 @@ public class MandateService implements MandateServiceRemote {
 		mandat.setDate_start_mandate(request.getMandateStartDate());
 		mandat.setRequest(request);
 		mandat.setResource(r);
-		List<Mandate> mandates = new ArrayList<>();
+		Set<Mandate> mandates = new HashSet();
 		mandates.add(mandat);
 		//r.setListMandats(mandates);
 		request.setListMandats(mandates);
@@ -100,8 +90,8 @@ public class MandateService implements MandateServiceRemote {
 		mandat.setHistorique(historique);
 		em.persist(historique);
 		return "affectation mandat"+mandat.toString()+" reussite pour"+r.toString();
-	    	} }
-	return "la resource n'est pas disponible";
+	    
+
 
 	}
 
@@ -153,13 +143,9 @@ cal2.setTime(mandate.getDate_start_mandate());
 		TypedQuery<Resource> query = em.createQuery("select  r from Resource r where r.id=:ResourceId", Resource.class)
 				.setParameter("ResourceId", ResourceId);
 		Set<Mandate> mandates=new HashSet<>();
-		/*for(Mandate m:query.getSingleResult().getListMandats()){
+		for(Mandate m:query.getSingleResult().getListMandats()){
 			mandates.add(m);
 		}
-<<<<<<< HEAD
-=======
-		*/
->>>>>>> d431fbd5a9c47604561e7f82ab187bdbcab44095
 	
 		return mandates;
 	}
@@ -206,7 +192,7 @@ cal2.setTime(mandate.getDate_start_mandate());
 		float facture = 0;
 		int nbreHeures = 0;
 		Resource resource = em.find(Resource.class, ResourceId);
-		/*for (Mandate m : resource.getListMandats()) {
+		for (Mandate m : resource.getListMandats()) {
 			if (m.getMandateId() == mandateId)
 
 			{
@@ -216,7 +202,7 @@ cal2.setTime(mandate.getDate_start_mandate());
 				facture = (float) nbreJours * resource.getSalaireHoraire();
 				m.setFacture(facture);
 			}
-		}*/
+		}
 		return facture;
 	}
 
@@ -225,12 +211,12 @@ cal2.setTime(mandate.getDate_start_mandate());
 
 		float factureTotale = 0;
 		Resource resource = em.find(Resource.class, ResourceId);
-		/*for (Mandate m : resource.getListMandats()) {
+		for (Mandate m : resource.getListMandats()) {
 
 			factureTotale += m.getFacture();
 			resource.setTotalFactureMandat(factureTotale);
 
-		}*/
+		}
 		return factureTotale;
 	}
 
@@ -304,7 +290,7 @@ double lon2=getLongitude(r.getIpAdress());
 	}
 	@Override
 	public Mandate modifierMandat(Mandate m, int idMandate) {
-	Mandate mandate=em.find(Mandate.class,idMandate);
+	Mandate mandate=em.find(Mandate.class,51);
 	mandate.setDate_end_mandate(m.getDate_end_mandate());
 	mandate.setDate_start_mandate(m.getDate_start_mandate());
 	return mandate;

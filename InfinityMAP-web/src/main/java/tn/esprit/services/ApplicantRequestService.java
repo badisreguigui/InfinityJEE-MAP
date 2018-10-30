@@ -34,18 +34,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import tn.esprit.PIDEVMap.persistence.Applicant;
-import tn.esprit.PIDEVMap.persistence.ApplicantAnswer;
-import tn.esprit.PIDEVMap.persistence.ApplicantFile;
-import tn.esprit.PIDEVMap.persistence.ApplicantRequest;
 import tn.esprit.PIDEVMap.persistence.CategoryTest;
 import tn.esprit.PIDEVMap.persistence.Question;
-import tn.esprit.PIDEVMap.persistence.Rdv;
-import tn.esprit.PIDEVMap.persistence.RdvState;
 import tn.esprit.PIDEVMap.persistence.Requeststate;
-import tn.esprit.PIDEVMap.persistence.Test;
 import tn.esprit.PIDEVMap.services.ApplicantFileServiceLocal;
 import tn.esprit.PIDEVMap.services.AppliquantRequestLocal;
+
+
 
 @Path("/ApplicantRequestService")
 @RequestScoped
