@@ -1,7 +1,12 @@
 package tn.esprit.services;
 
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -70,7 +75,7 @@ public class ResourceService  {
 	@POST
 	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
 	@Path("/getResources")
-	public List<Resource> DisplayResources() {
+	public Set<Resource> DisplayResources() {
 		return ResourceServiceLocal.DisplayResource();
 		
 	}
@@ -78,8 +83,8 @@ public class ResourceService  {
 	@POST
 	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
 	@Path("/filterResources")
-	public List<Resource> FilterResourceByName(@QueryParam(value="lastname") String name,@QueryParam(value="firstname") String firstname
-			,@QueryParam(value="seniority") String seniority,@QueryParam(value="sector") String sector
+	public Set<Resource> FilterResourceByName(@QueryParam(value="lastname") String name,@QueryParam(value="firstname") String firstname
+			,@QueryParam(value="seniority") int seniority,@QueryParam(value="sector") String sector
 			,@QueryParam(value="profil") String profil,@QueryParam(value="contractype") String contractype,
 			@QueryParam(value="state") String state,@QueryParam(value="region") String region){
 		return ResourceServiceLocal.FilterByName(name,firstname,seniority,sector,profil,contractype,state,region);
@@ -92,8 +97,32 @@ public class ResourceService  {
 		ResourceServiceLocal.addSkills(resourceId, skillId);
 		return "Affected";
 	}
+	
+	@POST
+	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
+	@Path("/addResourceSkill/{idresource}")
+	public String addResourceSkills(@PathParam(value="idresource") int idResource) {
+		ResourceServiceLocal.addSkillResourceRating(idResource);
+		return "added";
+		
+	}
 
-
+	@POST
+	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
+	@Path("/updateRating/{idresource}")
+	public String updateRatingResource(@PathParam(value="idresource") int idResource) {
+		ResourceServiceLocal.updateRating(idResource);
+		return "rating updated";
+		
+	}
+	
+	@POST
+	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
+	@Path("/getCurrentdate")
+	public String CalendarHolidays(@QueryParam(value="date") String d) throws ParseException{
+		return ResourceServiceLocal.holidayCalendar(d);
+		 
+	}
 
 
 

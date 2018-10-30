@@ -60,15 +60,19 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 
 	@Override
 	public String affecterRequestAapplicant(int applicantId, int requestId) {
-		TypedQuery<ApplicantRequest> query = em.createQuery("SELECT r FROM ApplicantRequest AS r WHERE r.applicantId = (SELECT a FROM Applicant AS a WHERE a.id = : applicantId)", ApplicantRequest.class); 
-		ApplicantRequest request = query.setParameter("applicantId", applicantId).getSingleResult(); 
-		////LA METHODE NE MARCHE PAS PUISQUE applicantId ne fait pas partie de la classe
-		//ApplicantRequest request = em.find(Applicant.class, applicantId).getApplicantRequest(); 
-		if (request == null){
-			em.find(ApplicantRequest.class, requestId).setApplicant(em.find(Applicant.class, applicantId));
-			return "success"; 
+		String selectApplicant = "SELECT a FROM Applicant AS a WHERE a.id = :applicantId"; 
+		selectApplicant = selectApplicant.replace(":applicantId", ""+applicantId); 
+		TypedQuery<ApplicantRequest> query = em.createQuery("SELECT r FROM ApplicantRequest AS r WHERE r.applicant = ("+selectApplicant+")", ApplicantRequest.class); 
+		List request = query.getResultList(); 
+		if (request.isEmpty()){
+			Applicant applicant = em.find(Applicant.class, applicantId); 
+			if(applicant != null){
+				em.find(ApplicantRequest.class, requestId).setApplicant(applicant);
+				return "Success"; 
+			}
+			return "The Applicant doesn't exist"; 
 		}
-		return "applicant already has a request!"; 
+		return "Applicant already has a request!"; 
 	}
 
 	@Override
@@ -79,10 +83,9 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 
 	@Override
 	public String CancelRequest(int requestId, int applicantId) {
-		//verify if applicantId of the owner of the request is the same
 		ApplicantRequest request = em.find(ApplicantRequest.class, requestId);
 		if(request != null){
-			if(request.getApplicant().getId() == applicantId){
+			if(request.getApplicant().getId() == applicantId){ //peut gérer NullPointerException si getId est null
 				em.remove(request);
 				return "deleted"; 
 			}
@@ -94,7 +97,7 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 	}
 
 	@Override
-	public Rdv TraiterDemande(int requestId, int reponse, Date date) {
+	public String TraiterDemande(int requestId, int reponse, Date date) {
 		ApplicantRequest request = em.find(ApplicantRequest.class, requestId);
 		if(reponse == 1){
 			request.setState(Requeststate.inProcess);
@@ -104,10 +107,11 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 			rdv.setState(RdvState.waiting);
 			rdv.setApplicant(em.find(ApplicantRequest.class, requestId).getApplicant());
 			em.persist(rdv);
-			return rdv;
+			return "RDV pris pour le "+rdv.getRdvDate()+" , le statut du rdv est: "+rdv.getState().toString();
 		}
 		else if (reponse == -1){
 			request.setState(Requeststate.denied);
+			return "Vous avez refuse la demande. Pas de rdv pris"; 
 		}
 		return null;
 	}
@@ -132,24 +136,32 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 		float result = 0; 
 		Test test = em.find(Test.class, testId); 
 		List<Question> questions = test.getQuestions(); 
+		ApplicantFileService proxy = new ApplicantFileService(); 
 		for (Question question : questions){
-			TypedQuery<ApplicantAnswer> query = em.createQuery("SELECT q FROM ApplicantAnswer WHERE q.questionId = :questionId AND q.applicantId = :applicantId", ApplicantAnswer.class); 
-		    ApplicantAnswer answer = query.setParameter("questionId", question.getId())
-		    	  .setParameter("applicantId", applicantId).getSingleResult(); 
-		    
-		    if (answer.getAnswer() == question.getAnswer()){
+			String selectQuestion = "SELECT q FROM Question AS q WHERE q.id = :questionId"; 
+			selectQuestion = selectQuestion.replace(":questionId", ""+question.getId()); 
+			String selectApplicant = "SELECT a FROM Applicant AS a WHERE a.id = :applicantId"; 
+			selectApplicant = selectApplicant.replace(":applicantId", ""+applicantId); 
+			TypedQuery<ApplicantAnswer> query = em.createQuery("SELECT r FROM ApplicantAnswer AS r WHERE r.applicant = ("+selectApplicant+") AND r.question = ("+selectQuestion+")", ApplicantAnswer.class); 
+			ApplicantAnswer applicantAnswer = query.getSingleResult();
+			
+			if (applicantAnswer.getAnswer().equals(question.getAnswer())){
 		    	result+=10; 
 		    }
 		}
-		
-		TypedQuery<ApplicantFile> query = em.createQuery("SELECT q FROM ApplicantFile WHERE q.applicantId = :applicantId", ApplicantFile.class); 
-		ApplicantFile file = query.setParameter("applicantId", applicantId).getSingleResult(); 
-	    
+		result = result/questions.size(); 
+		Applicant applicant = em.find(Applicant.class, applicantId); 
+		ApplicantFile file = applicant.getApplicantFile(); 
 		if (file != null){
 	    	file.setTestResult(result);	
-	    }
-		///mettre une appreciation sur la note
-		return result/questions.size();
+	    } else{
+			ApplicantFile newfile = new ApplicantFile(); 
+			newfile.setTestResult(result);
+			newfile.setApplicant(applicant);
+			em.persist(newfile);
+		}
+		///mettre une appreciation sur la note + changer état applicant selon note du test
+		return result;
 	}
 	
 	
@@ -160,7 +172,6 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 	@Lock(LockType.READ)
 	    public void sendMail(String recipient, String subject, String text) {
 	        try {
-
 	            InitialContext ic = new InitialContext();
 	            mailSession = (Session) ic.lookup("java:/futuramail");
 	            MimeMessage message = new MimeMessage(mailSession);
@@ -194,6 +205,7 @@ public class ApplicantRequestService implements AppliquantRequestLocal {
 	@Override
 	public void proposerLettre(int applicantId, String bodyFormulaire) {
 		// TODO Auto-generated method stub
-		
 	}
+	
+	
 }

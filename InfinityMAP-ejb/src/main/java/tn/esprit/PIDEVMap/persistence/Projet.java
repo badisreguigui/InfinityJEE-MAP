@@ -6,6 +6,10 @@ import java.util.List;
 
 import javax.persistence.*;
 
+<<<<<<< HEAD
+=======
+import com.fasterxml.jackson.annotation.JsonIgnore;
+>>>>>>> d431fbd5a9c47604561e7f82ab187bdbcab44095
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -24,7 +28,12 @@ public class Projet implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	private TypeProjet statut;
+<<<<<<< HEAD
 	private String name;
+=======
+	private String nom;
+	private String etat="available";
+>>>>>>> d431fbd5a9c47604561e7f82ab187bdbcab44095
 	
 	public String getName() {
 		return name;
@@ -33,16 +42,20 @@ public class Projet implements Serializable {
 		this.name = name;
 	}
 	@ManyToOne
+	@JsonIgnore
 	private Client client;
 	
 	@ManyToMany
+	@JsonIgnore
 	private List<Resource> listResources;
 
 	@ManyToMany
+	@JsonIgnore
 	private List<Skills> listSkills;
 	
 	@OneToOne(mappedBy="project")
 	private ResourceRequest resourceRequest;
+<<<<<<< HEAD
 	@JsonProperty("projetStartDate")
 	@Temporal(TemporalType.DATE)
 	private Date projetStartDate;
@@ -50,6 +63,14 @@ public class Projet implements Serializable {
 	@JsonProperty("projetEndDate")
 	@Temporal(TemporalType.DATE)
 	private Date projetEndDate;
+=======
+	
+	@ManyToOne
+	//@JsonProperty("listResourcess")
+	@JsonIgnore
+	private Resource ressource;
+	
+>>>>>>> d431fbd5a9c47604561e7f82ab187bdbcab44095
 	
 	public ResourceRequest getResourceRequest() {
 		return resourceRequest;
@@ -94,6 +115,7 @@ public class Projet implements Serializable {
 	public void setListSkills(List<Skills> listSkills) {
 		this.listSkills = listSkills;
 	}
+<<<<<<< HEAD
 	public Date getProjetStartDate() {
 		return projetStartDate;
 	}
@@ -105,7 +127,27 @@ public class Projet implements Serializable {
 	}
 	public void setProjetEndDate(Date projetEndDate) {
 		this.projetEndDate = projetEndDate;
+=======
+	public Resource getRessource() {
+		return ressource;
+	}
+	public void setRessource(Resource ressource) {
+		this.ressource = ressource;
+	}
+	public String getNom() {
+		return nom;
+	}
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+	public String getEtat() {
+		return etat;
+	}
+	public void setEtat(String etat) {
+		this.etat = etat;
+>>>>>>> d431fbd5a9c47604561e7f82ab187bdbcab44095
 	}   
+	
 	
    
 }

@@ -58,6 +58,7 @@ public class Mandate implements Serializable {
 	public void setRequest(ResourceRequest request) {
 		this.request = request;
 	}
+	@JsonBackReference
 	public Resource getResource() {
 		return resource;
 	}

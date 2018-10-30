@@ -90,7 +90,7 @@ public class MandateService implements MandateServiceRemote {
 		mandat.setResource(r);
 		List<Mandate> mandates = new ArrayList<>();
 		mandates.add(mandat);
-		r.setListMandats(mandates);
+		//r.setListMandats(mandates);
 		request.setListMandats(mandates);
 		HistoriqueAssignationMandat historique = new HistoriqueAssignationMandat();
 		historique.setHeureSauvegarde(Calendar.getInstance().getTime());
@@ -153,9 +153,13 @@ cal2.setTime(mandate.getDate_start_mandate());
 		TypedQuery<Resource> query = em.createQuery("select  r from Resource r where r.id=:ResourceId", Resource.class)
 				.setParameter("ResourceId", ResourceId);
 		Set<Mandate> mandates=new HashSet<>();
-		for(Mandate m:query.getSingleResult().getListMandats()){
+		/*for(Mandate m:query.getSingleResult().getListMandats()){
 			mandates.add(m);
 		}
+<<<<<<< HEAD
+=======
+		*/
+>>>>>>> d431fbd5a9c47604561e7f82ab187bdbcab44095
 	
 		return mandates;
 	}
@@ -202,7 +206,7 @@ cal2.setTime(mandate.getDate_start_mandate());
 		float facture = 0;
 		int nbreHeures = 0;
 		Resource resource = em.find(Resource.class, ResourceId);
-		for (Mandate m : resource.getListMandats()) {
+		/*for (Mandate m : resource.getListMandats()) {
 			if (m.getMandateId() == mandateId)
 
 			{
@@ -212,7 +216,7 @@ cal2.setTime(mandate.getDate_start_mandate());
 				facture = (float) nbreJours * resource.getSalaireHoraire();
 				m.setFacture(facture);
 			}
-		}
+		}*/
 		return facture;
 	}
 
@@ -221,12 +225,12 @@ cal2.setTime(mandate.getDate_start_mandate());
 
 		float factureTotale = 0;
 		Resource resource = em.find(Resource.class, ResourceId);
-		for (Mandate m : resource.getListMandats()) {
+		/*for (Mandate m : resource.getListMandats()) {
 
 			factureTotale += m.getFacture();
 			resource.setTotalFactureMandat(factureTotale);
 
-		}
+		}*/
 		return factureTotale;
 	}
 

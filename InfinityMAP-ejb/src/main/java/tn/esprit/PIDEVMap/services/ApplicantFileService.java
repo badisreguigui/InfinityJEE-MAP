@@ -39,9 +39,9 @@ public class ApplicantFileService implements ApplicantFileServiceLocal{
 
 	@Override
 	public List<Question> recevoirQuestions(int testId) {
-		//em.find(Test.class, testId).getQuestions(); // ne marche pas??
-		TypedQuery<Question> query = em.createQuery("SELECT q FROM Question WHERE q.testId = :testId", Question.class); 
-		List<Question> questions = query.setParameter("testId", testId).getResultList(); 
+		List<Question> questions = em.find(Test.class, testId).getQuestions(); // ne marche pas??
+		//TypedQuery<Question> query = em.createQuery("SELECT q FROM Question WHERE q.testId = :testId", Question.class); 
+		//List<Question> questions = query.setParameter("testId", testId).getResultList(); 
 		return questions; 
 	}
 
@@ -49,15 +49,32 @@ public class ApplicantFileService implements ApplicantFileServiceLocal{
 	public String repondreQuestion(int questionId, String reponse, int applicantId) {
 		ApplicantAnswer myAnswer = new ApplicantAnswer(); 
 		myAnswer.setAnswer(reponse);
+		
 		Question questionAnswered = em.find(Question.class, questionId); 
 		Applicant applicant = em.find(Applicant.class, applicantId);
 		if((questionAnswered != null) && (applicant != null)){
-			myAnswer.setApplicant(applicant);
-			myAnswer.setQuestion(questionAnswered);
-			em.persist(myAnswer);
-			return "Reponse Ajoutée"; 
+			if(ListeReponsesApplicant(applicantId, questionId).isEmpty()){ 
+				myAnswer.setApplicant(applicant);
+				myAnswer.setQuestion(questionAnswered);
+				em.persist(myAnswer);
+				return "Reponse Ajoutée"; 
+			}
+			return "Vous ne pouvez pas repondre 2 fois à la même question !"; 
 		}
 		return "Vérifiez vos données"; 
+	}
+	
+	public List<ApplicantAnswer> ListeReponsesApplicant(int applicantId, int questionId){
+		String selectQuestion = "SELECT q FROM Question AS q WHERE q.id = :questionId"; 
+		selectQuestion = selectQuestion.replace(":questionId", ""+questionId); 
+		
+		String selectApplicant = "SELECT a FROM Applicant AS a WHERE a.id = :applicantId"; 
+		selectApplicant = selectApplicant.replace(":applicantId", ""+applicantId); 
+		
+		TypedQuery<ApplicantAnswer> query = em.createQuery("SELECT r FROM ApplicantAnswer AS r WHERE r.applicant = ("+selectApplicant+") AND r.question = ("+selectQuestion+")", ApplicantAnswer.class); 
+		List<ApplicantAnswer> applicantAnswer = query.getResultList();
+		
+		return applicantAnswer; 
 	}
 
 	@Override

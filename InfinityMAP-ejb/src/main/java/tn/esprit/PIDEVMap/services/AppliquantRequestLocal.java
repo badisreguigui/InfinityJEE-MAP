@@ -20,7 +20,7 @@ public interface AppliquantRequestLocal {
 	public String CancelRequest(int applicantId, int requestId); //supprimer + verifier si applicantId est celui de la demande
 	
 	/////Partie admin
-	public Rdv TraiterDemande(int requestId, int reponse, Date date); //retourner le rdv et modifier etat Request
+	public String TraiterDemande(int requestId, int reponse, Date date); //retourner le rdv et modifier etat Request
 	public int proposerTest(CategoryTest categoryTest); 
 	public void ajouterQuestion(Question q, int testId);
 	public float corrigerTest(int testId, int applicantId); //update note dans dossier ou ressource

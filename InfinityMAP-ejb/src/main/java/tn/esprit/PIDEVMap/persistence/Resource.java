@@ -2,6 +2,7 @@ package tn.esprit.PIDEVMap.persistence;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -36,7 +38,7 @@ public class Resource implements Serializable {
 	@JsonProperty("picture")
 	protected String picture;
 	@JsonProperty("seniority")
-	protected String seniority;
+	protected int seniority;
 	@JsonProperty("sector")
 	protected String sector;
 	@JsonProperty("profil")
@@ -53,6 +55,7 @@ public class Resource implements Serializable {
 	protected float rating;
 	private Float salaireHoraire;
 	private Float TotalFactureMandat;
+<<<<<<< HEAD
 	private String ipAdress;
     private int yearsOfExperience;
 	public int getYearsOfExperience() {
@@ -74,27 +77,36 @@ public class Resource implements Serializable {
 		this.yearsOfExperience = yearsOfExperience;
 	}
 
+=======
+	private int holiday;
+>>>>>>> d431fbd5a9c47604561e7f82ab187bdbcab44095
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JsonProperty("listSkills")
-	private List<Skills> listSkills;
+	@OneToMany(mappedBy="ressource",fetch=FetchType.EAGER)
+	//@JsonProperty("listSkills")
+	private Set<Skills> listSkills;
+	
 	@JsonManagedReference(value="resource")
-	@OneToMany(mappedBy="resource",cascade=CascadeType.PERSIST)
 
-	private List<Mandate>ListMandats;
+	@OneToMany(mappedBy="resource",cascade=CascadeType.PERSIST,fetch=FetchType.EAGER)
+	//@JsonIgnore
+	private Set<Mandate>ListMandats;
 	
   
 	
-	/*@ManyToMany(mappedBy="listResources",fetch= FetchType.LAZY)
-	@JsonProperty("listProjets")
-	private List<Projet> listProjets;
+	@OneToMany(mappedBy="ressource",cascade=CascadeType.PERSIST,fetch=FetchType.EAGER)
+	//@JsonProperty("listProjets")
+	private Set<Projet> listProjets;
 
 	
+<<<<<<< HEAD
 	 	@OneToMany(mappedBy="resource",fetch= FetchType.LAZY)
 	 	@JsonProperty("listMandats")
 		private List<Mandate> listMandats;
 */
 	 	@OneToMany(mappedBy="resource",fetch= FetchType.LAZY)
+=======
+	 	/*@OneToMany(mappedBy="resource",fetch= FetchType.LAZY)
+>>>>>>> d431fbd5a9c47604561e7f82ab187bdbcab44095
 	 	@JsonProperty("listVacations")
 		private List<Vacation> listVacations;
 	 	
@@ -127,7 +139,7 @@ public class Resource implements Serializable {
 		TotalFactureMandat = totalFactureMandat;
 	}
 
-
+	/*@JsonManagedReference
 	public List<Mandate> getListMandats() {
 		return ListMandats;
 	}
@@ -135,7 +147,7 @@ public class Resource implements Serializable {
 
 	public void setListMandats(List<Mandate> listMandats) {
 		ListMandats = listMandats;
-	}
+	}*/
 
 
 	public Resource() {
@@ -144,7 +156,7 @@ public class Resource implements Serializable {
 	}
 
 
-	public Resource(int id, String lastname, String firstname, String picture, String seniority, String sector,
+	public Resource(int id, String lastname, String firstname, String picture, int seniority, String sector,
 			String profil, ContractType contractype, State state, String region, float rating) {
 		super();
 		this.id = id;
@@ -162,8 +174,8 @@ public class Resource implements Serializable {
 
 
 
-	public Resource(int id, String lastname, String firstname, String picture, String seniority, String sector,
-			String profil, ContractType contractype, State state, String region, float rating, List<Skills> listSkills
+	public Resource(int id, String lastname, String firstname, String picture, int seniority, String sector,
+			String profil, ContractType contractype, State state, String region, float rating, Set<Skills> listSkills
 			) {
 		super();
 		this.id = id;
@@ -208,10 +220,10 @@ public class Resource implements Serializable {
 	public void setPicture(String picture) {
 		this.picture = picture;
 	}
-	public String getSeniority() {
+	public int getSeniority() {
 		return seniority;
 	}
-	public void setSeniority(String seniority) {
+	public void setSeniority(int seniority) {
 		this.seniority = seniority;
 	}
 	public String getSector() {
@@ -278,16 +290,18 @@ public class Resource implements Serializable {
 	}
 
 
-	public List<Skills> getListSkills() {
+	@JsonManagedReference
+	public Set<Skills> getListSkills() {
 		return listSkills;
 	}
 
 
-	public void setListSkills(List<Skills> listSkills) {
+	public void setListSkills(Set<Skills> listSkills) {
 		this.listSkills = listSkills;
 	}
 
 
+<<<<<<< HEAD
 	@Override
 	public String toString() {
 		return "Resource [id=" + id + ", lastname=" + lastname + ", firstname=" + firstname + ", picture=" + picture
@@ -300,7 +314,39 @@ public class Resource implements Serializable {
 
 
 	
+=======
+	public int getHoliday() {
+		return holiday;
+	}
 
+
+	public void setHoliday(int holiday) {
+		this.holiday = holiday;
+	}
+
+
+	public Set<Mandate> getListMandats() {
+		return ListMandats;
+	}
+
+
+	public void setListMandats(Set<Mandate> listMandats) {
+		ListMandats = listMandats;
+	}
+
+
+	public Set<Projet> getListProjets() {
+		return listProjets;
+	}
+
+
+	public void setListProjets(Set<Projet> listProjets) {
+		this.listProjets = listProjets;
+	}
+>>>>>>> d431fbd5a9c47604561e7f82ab187bdbcab44095
+
+	
+	
 	
 
 
