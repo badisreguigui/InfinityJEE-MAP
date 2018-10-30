@@ -136,6 +136,7 @@ private Set<Vacation> Vacation;
 	public Set<Mandate> getListMandats() {
 		return ListMandats;
 	}
+	
 
 
 	public void setListMandats(Set<Mandate> ListMandats) {
