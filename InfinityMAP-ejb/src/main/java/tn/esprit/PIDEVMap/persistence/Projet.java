@@ -1,9 +1,12 @@
 package tn.esprit.PIDEVMap.persistence;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Entity implementation class for Entity: Projet
@@ -21,7 +24,14 @@ public class Projet implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	private TypeProjet statut;
+	private String name;
 	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	@ManyToOne
 	private Client client;
 	
@@ -33,7 +43,13 @@ public class Projet implements Serializable {
 	
 	@OneToOne(mappedBy="project")
 	private ResourceRequest resourceRequest;
-	
+	@JsonProperty("projetStartDate")
+	@Temporal(TemporalType.DATE)
+	private Date projetStartDate;
+
+	@JsonProperty("projetEndDate")
+	@Temporal(TemporalType.DATE)
+	private Date projetEndDate;
 	
 	public ResourceRequest getResourceRequest() {
 		return resourceRequest;
@@ -77,6 +93,18 @@ public class Projet implements Serializable {
 	}
 	public void setListSkills(List<Skills> listSkills) {
 		this.listSkills = listSkills;
+	}
+	public Date getProjetStartDate() {
+		return projetStartDate;
+	}
+	public void setProjetStartDate(Date projetStartDate) {
+		this.projetStartDate = projetStartDate;
+	}
+	public Date getProjetEndDate() {
+		return projetEndDate;
+	}
+	public void setProjetEndDate(Date projetEndDate) {
+		this.projetEndDate = projetEndDate;
 	}   
 	
    

@@ -27,9 +27,10 @@ public class Mandate implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int MandateId;
-	
+	@JsonProperty("dateEndMandate")
 	@Temporal(TemporalType.DATE)
 	private Date date_end_mandate;
+	@JsonProperty("dateStartMandate")
 	@Temporal(TemporalType.DATE)
 	private Date date_start_mandate;
 	private String NomMandat;
@@ -93,5 +94,12 @@ public class Mandate implements Serializable {
 	public void setFacture(float facture) {
 		Facture = facture;
 	}
+	@Override
+	public String toString() {
+		return "Mandate [MandateId=" + MandateId + ", date_end_mandate=" + date_end_mandate + ", date_start_mandate="
+				+ date_start_mandate + ", NomMandat=" + NomMandat + ", Facture=" + Facture
+				+ "]";
+	}
+
 	
 }

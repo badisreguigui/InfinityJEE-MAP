@@ -19,6 +19,7 @@ public class Client implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	private String nom;
+	private String ipAdress;
 	private String logo;
 	private CategorieClient categorie;
 	private TypeClient typeClient;
@@ -29,6 +30,15 @@ public class Client implements Serializable {
 
 	
 	
+	public String getIpAdress() {
+		return ipAdress;
+	}
+	public void setIpAdress(String ipAdress) {
+		this.ipAdress = ipAdress;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	public Client(String nom, String logo, CategorieClient categorie, TypeClient typeClient) {
 		
 		this.nom = nom;
@@ -49,7 +59,6 @@ public class Client implements Serializable {
 	public int getId() {
 		return this.id;
 	}
-
 	public void setId(int id) {
 		this.id = id;
 	}   

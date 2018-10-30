@@ -53,6 +53,27 @@ public class Resource implements Serializable {
 	protected float rating;
 	private Float salaireHoraire;
 	private Float TotalFactureMandat;
+	private String ipAdress;
+    private int yearsOfExperience;
+	public int getYearsOfExperience() {
+		return yearsOfExperience;
+	}
+
+
+	public String getIpAdress() {
+		return ipAdress;
+	}
+
+
+	public void setIpAdress(String ipAdress) {
+		this.ipAdress = ipAdress;
+	}
+
+
+	public void setYearsOfExperience(int yearsOfExperience) {
+		this.yearsOfExperience = yearsOfExperience;
+	}
+
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JsonProperty("listSkills")
@@ -72,11 +93,21 @@ public class Resource implements Serializable {
 	 	@OneToMany(mappedBy="resource",fetch= FetchType.LAZY)
 	 	@JsonProperty("listMandats")
 		private List<Mandate> listMandats;
-
+*/
 	 	@OneToMany(mappedBy="resource",fetch= FetchType.LAZY)
 	 	@JsonProperty("listVacations")
-		private List<Vacation> listVacations;*/
+		private List<Vacation> listVacations;
 	 	
+	public List<Vacation> getListVacations() {
+			return listVacations;
+		}
+
+
+		public void setListVacations(List<Vacation> listVacations) {
+			this.listVacations = listVacations;
+		}
+
+
 	public Float getSalaireHoraire() {
 		return salaireHoraire;
 	}
@@ -257,6 +288,18 @@ public class Resource implements Serializable {
 	}
 
 
+	@Override
+	public String toString() {
+		return "Resource [id=" + id + ", lastname=" + lastname + ", firstname=" + firstname + ", picture=" + picture
+				+ ", seniority=" + seniority + ", sector=" + sector + ", profil=" + profil + ", contractype="
+				+ contractype + "]";
+	}
+
+
+	
+
+
+	
 
 	
 
