@@ -13,9 +13,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
+@JsonIgnoreProperties
 public class Skills implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -26,7 +28,7 @@ public class Skills implements Serializable {
 	
 	/*@ManyToMany(mappedBy="listSkills")
 	private List<Projet> listProjects;*/
-	
+	@JsonBackReference(value="skills")
 	@ManyToOne
 	@JsonProperty("listResources")
 	private Resource ressource;

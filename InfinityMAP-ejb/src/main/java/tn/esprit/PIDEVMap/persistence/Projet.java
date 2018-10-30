@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -65,7 +66,8 @@ public class Projet implements Serializable {
 	
 	@ManyToOne
 	//@JsonProperty("listResourcess")
-	@JsonIgnore
+	@JsonBackReference(value="projet")
+	
 	private Resource ressource;
 	
 	

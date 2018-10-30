@@ -11,14 +11,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 
 
 @Entity
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties
 public class Vacation implements Serializable {
 
 	@Id
@@ -29,7 +31,7 @@ public class Vacation implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date dateFin;
 	@ManyToOne
-	@JsonIgnore
+	@JsonBackReference(value="vacation")
 	private Resource resource;
 	
 	public Date getDateDebut() {

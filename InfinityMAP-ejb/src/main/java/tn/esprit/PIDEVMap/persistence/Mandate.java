@@ -40,7 +40,7 @@ public class Mandate implements Serializable {
 	private ResourceRequest request;
 	private float Facture;
 	@ManyToOne
-	@JsonIgnore
+	
 	@JsonBackReference(value="resource")
 	private Resource resource;
 	@ManyToOne
