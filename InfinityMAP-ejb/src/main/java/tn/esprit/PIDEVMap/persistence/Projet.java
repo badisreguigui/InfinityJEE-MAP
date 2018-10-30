@@ -52,8 +52,8 @@ public class Projet implements Serializable {
 	@JsonIgnore
 	private List<Skills> listSkills;
 	
-	@OneToOne(mappedBy="project")
-	private ResourceRequest resourceRequest;
+	@OneToMany(mappedBy="project")
+private List<ResourceRequest>resourceRequest;
 
 	@JsonProperty("projetStartDate")
 	@Temporal(TemporalType.DATE)
@@ -67,14 +67,13 @@ public class Projet implements Serializable {
 	@ManyToOne
 	//@JsonProperty("listResourcess")
 	@JsonBackReference(value="projet")
-	
 	private Resource ressource;
 	
 	
-	public ResourceRequest getResourceRequest() {
+	public List<ResourceRequest> getResourceRequest() {
 		return resourceRequest;
 	}
-	public void setResourceRequest(ResourceRequest resourceRequest) {
+	public void setResourceRequest(List<ResourceRequest> resourceRequest) {
 		this.resourceRequest = resourceRequest;
 	}
 	public Projet(TypeProjet statut) {
