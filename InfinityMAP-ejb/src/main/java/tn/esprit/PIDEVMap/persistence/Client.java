@@ -7,18 +7,21 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 
 /**
  * Entity implementation class for Entity: Client
  *
  */
 @Entity
-
+@JsonIgnoreProperties({ "projets"})
 public class Client implements Serializable {
 
 	   
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	
 	private int id;
 	private String nom;
 	private String ipAdress;
@@ -31,9 +34,19 @@ public class Client implements Serializable {
 	@OneToMany(mappedBy="client",cascade=CascadeType.PERSIST,fetch=FetchType.EAGER)
 	@JsonIgnore
 	private List<Projet> projets;
+	
+	@OneToOne(mappedBy="client")
+	@JsonIgnore
+	private User user;
 
 	
 	
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
 	public String getIpAdress() {
 		return ipAdress;
 	}

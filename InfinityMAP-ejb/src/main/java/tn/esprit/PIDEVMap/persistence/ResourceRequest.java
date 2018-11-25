@@ -20,6 +20,7 @@ import javax.ws.rs.Path;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -31,6 +32,7 @@ public class ResourceRequest implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int requestId;
+	@Temporal(TemporalType.DATE)
 	@JsonProperty("depotDate")
 	private Date depotDate;
 	@JsonProperty("depotHour")
@@ -42,7 +44,7 @@ public class ResourceRequest implements Serializable {
 	@JsonProperty("mandateEndDate")
 	@Temporal(TemporalType.DATE)
 	private Date mandateEndDate;
-	@JsonProperty("requiremenets")
+	@JsonProperty("requirements")
 	private String requirements;
 	@JsonProperty("searchedProfile")
 	private String searchedProfile;
@@ -51,18 +53,18 @@ public class ResourceRequest implements Serializable {
 	@JsonProperty("EducationScolarity")
 	private String EducationScolarity;
 
-	@JsonProperty("project")
+	@JsonProperty("projet")
 	@ManyToOne
 	private Projet project;
 	
 
-
 	@ManyToOne
+	@JsonProperty("client")
 	private Client client;
 
 	@JsonProperty("Director")
 	private String Director;
-
+	@JsonProperty("Title") 
 	private String Title;
 	
 	
@@ -169,6 +171,7 @@ public class ResourceRequest implements Serializable {
 		EducationScolarity = educationScolarity;
 	}
 
+	
 	public Projet getProject() {
 		return project;
 	}
@@ -204,6 +207,14 @@ public class ResourceRequest implements Serializable {
 
 	public ResourceRequest() {
 		super();
+	}
+
+	@Override
+	public String toString() {
+		return "ResourceRequest [requestId=" + requestId + ", depotDate=" + depotDate + ", depotHour=" + depotHour
+				+ ", mandateStartDate=" + mandateStartDate + ", mandateEndDate=" + mandateEndDate + ", requirements="
+				+ requirements + ", searchedProfile=" + searchedProfile + ", yearsOfExperience=" + yearsOfExperience
+				+ ", EducationScolarity=" + EducationScolarity + ", Director=" + Director + ", Title=" + Title + "]";
 	}
 
 	

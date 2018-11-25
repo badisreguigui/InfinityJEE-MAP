@@ -34,6 +34,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import tn.esprit.PIDEVMap.persistence.Client;
 import tn.esprit.PIDEVMap.persistence.Projet;
 import tn.esprit.PIDEVMap.persistence.ResourceRequest;
 
@@ -46,44 +47,7 @@ public class ResourceRequestService implements ResourceRequestServiceLocal {
 	EntityManager em;
 	
 	
-	@Override
-	public String ajouterResourceRequest(ResourceRequest ressourceRequest,int idProjet)
-	{
- 
-		long millis=System.currentTimeMillis();  
-		java.sql.Date date=new java.sql.Date(millis);  
-		//System.out.println(date); 
-       ressourceRequest.setProject(em.find(Projet.class,idProjet));
-       ressourceRequest.setDepotDate(date);
-       ressourceRequest.setMandateEndDate(date);
-       ressourceRequest.setMandateStartDate(date);
-		em.persist(ressourceRequest);
-		final String username = "slim.aouadi@esprit.tn";
-		final String password = "slim@5ra21156990";
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mail.smtp.port", "587");
-		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
-			}
-		});
-		try {
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("slim.aouadi@esprit.tn"));
-			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("slim.aouadi@esprit.tn"));
-			message.setSubject("");
-			message.setText("ResourceRequest Added");
-			Transport.send(message);
-			System.out.println("Done");
-		} catch (MessagingException e) {
-			throw new RuntimeException(e);
-		}
-		return " Successfull";
-	}
-
+	
 	
 	@Override
 	public void supprimerResourceRequest(int id)
@@ -93,6 +57,7 @@ public class ResourceRequestService implements ResourceRequestServiceLocal {
 	}
 
 	@Override
+	
 	public void modifierResourceRequest(int id) {
 		
 		 
@@ -115,6 +80,45 @@ public class ResourceRequestService implements ResourceRequestServiceLocal {
 	public void TraiterResourceRequest() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public String ajouterResourceRequest(ResourceRequest ressourceRequest, int idProjet, int idClient) {
+
+		long millis=System.currentTimeMillis();  
+		java.sql.Date date=new java.sql.Date(millis);  
+		//System.out.println(date); 
+        ressourceRequest.setProject(em.find(Projet.class,idProjet));
+        ressourceRequest.setClient(em.find(Client.class,idClient));
+
+       ressourceRequest.setDepotDate(date);
+       ressourceRequest.setMandateEndDate(date);
+       ressourceRequest.setMandateStartDate(date);
+		em.persist(ressourceRequest);
+		final String username = "slim.aouadi@esprit.tn";
+		final String password = "slim@5ra21156990";
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		});
+		try {
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress("slim.aouadi@esprit.tn"));
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("slim.aouadi@esprit.tn"));
+			message.setSubject("New Resource Request");
+			message.setText("You've just recieved a new Resource Request from Slim");
+			Transport.send(message);
+			System.out.println("Done");
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
+		}
+		return " Successfull";
 	}
 
 

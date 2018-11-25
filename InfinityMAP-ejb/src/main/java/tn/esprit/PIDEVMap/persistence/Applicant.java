@@ -10,6 +10,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 enum ApplicantType{Applicant,PreEmployed,employed,refused}
+
 @Entity
 public class Applicant extends Resource implements Serializable{	
 

@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -39,6 +40,7 @@ public class Resource implements Serializable {
 	protected String firstname;
 	@JsonProperty("picture")
 	protected String picture;
+	
 	@JsonProperty("seniority")
 	protected int seniority;
 	@JsonProperty("sector")
@@ -115,7 +117,7 @@ public class Resource implements Serializable {
 	private int holiday;
 
 
-@JsonManagedReference(value="skills")
+    @JsonManagedReference(value="skills")
 	@OneToMany(mappedBy="ressource",fetch=FetchType.EAGER)
 	private Set<Skills> listSkills;
 
@@ -123,14 +125,29 @@ public class Resource implements Serializable {
     @OneToMany(mappedBy="resource",cascade=CascadeType.PERSIST,fetch=FetchType.EAGER)
 	private Set<Mandate>ListMandats;
 
-@JsonManagedReference(value="projet")
-	@OneToMany(mappedBy="ressource",cascade=CascadeType.PERSIST,fetch=FetchType.EAGER)
-	private Set<Projet> listProjets;
+	@ManyToOne
+	@JsonIgnore
+	private Projet projet;
 
 
 @JsonManagedReference(value="vacation")
 @OneToMany(mappedBy="resource",fetch=FetchType.EAGER)
 private Set<Vacation> Vacation;
+
+@OneToOne(mappedBy="resource")
+private User user;
+
+
+
+
+	public User getUser() {
+	return user;
+}
+
+
+public void setUser(User user) {
+	this.user = user;
+}
 
 
 	public Set<Mandate> getListMandats() {
@@ -319,16 +336,19 @@ private Set<Vacation> Vacation;
 	}
 
 
-
-
-	public Set<Projet> getListProjets() {
-		return listProjets;
+	public Projet getProjet() {
+		return projet;
 	}
 
 
-	public void setListProjets(Set<Projet> listProjets) {
-		this.listProjets = listProjets;
+	public void setProjet(Projet projet) {
+		this.projet = projet;
 	}
+
+
+
+
+	
 
 
 	

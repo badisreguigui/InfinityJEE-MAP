@@ -143,6 +143,7 @@ public class ProjetService {
     public Response findListPByIdClient(@PathParam("idclient") int idclient)
     {
     	Client client=remoteClient.findClientById(idclient);
+    	//System.out.println("PROJECTS FOUND ===>"+remoteProjet.findListPByIdClient(idclient).size());
     	if(client==null)
     	{
     		return javax.ws.rs.core.Response.ok("client non existant").build();
@@ -151,6 +152,7 @@ public class ProjetService {
     	{
     		return javax.ws.rs.core.Response.ok("client supprime").build();
     	}
+    	
     	return Response.status(Status.ACCEPTED).entity(remoteProjet.findListPByIdClient(idclient)).build()  ;
     }
     

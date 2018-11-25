@@ -23,34 +23,35 @@ import tn.esprit.PIDEVMap.persistence.User;
  
 @Stateful 
 @Path("/MessageService") 
-@RequestScoped 
+@RequestScoped
 public class MessageService implements MessageServiceLocal { 
  
 	@PersistenceContext(unitName="map-ejb") 
 	EntityManager em; 
 	 
-	@Override 
-	public int EnvoyerMessage(Message message,int userId) { 
+	@Override
+	
+	public int EnvoyerMessage(Message message,int userId)
+	{ 
 		em.persist(message); 
 		MessageNotif mn=new MessageNotif(); 
 		mn.setDescription(message.getMessageBody()); 
 		mn.setSeen(0); 
-		User u=(User) em.createQuery("Select u from User u where u.userId=:userId").setParameter("userId",userId).getSingleResult(); 
+		User u=(User) em.createQuery("Select u from User u where u.id=:userId").setParameter("userId",userId).getSingleResult(); 
 		mn.setUser(u); 
 		em.persist(mn); 
 		return mn.getMessageNotifId(); 
 	} 
  
 	@Override 
-	public void supprimerMessage(int id) { 
-		// TODO Auto-generated method stub 
-		 
+	public void supprimerMessage(int messageId) { 
+		em.remove(em.find(Message.class, messageId)); 
 	} 
  
  
 	@Override 
 	public List<TchatMessages> getAllMessage(int discussId) { 
-		TypedQuery<TchatMessages> query=em.createQuery("select m from TchatMessages m where m.tchatdiscussion=(select d from TchatDiscussion d where d.id=76)",TchatMessages.class); 
+		TypedQuery<TchatMessages> query=em.createQuery("select m from TchatMessages m where m.tchatdiscussion=(select d from TchatDiscussion d where d.id=:discussId)",TchatMessages.class).setParameter("discussId",discussId); 
 		 
 		return query.getResultList(); 
 	} 
@@ -74,7 +75,8 @@ public class MessageService implements MessageServiceLocal {
 				if((tauxPositiveWords > 25)&&(tauxPositiveWords < 50)){ 
 					tauxAppreciation+=0.5;  
 				} 
-				else if(tauxPositiveWords > 50){ 
+				else if(tauxPositiveWords > 50)
+				{ 
 					tauxAppreciation+=1;  
 				} 
  
@@ -97,12 +99,13 @@ public class MessageService implements MessageServiceLocal {
 			return "mauvaise appréciation"+tauxAppreciation;  
 		} 
 		else if((tauxAppreciation > 25)&&(tauxAppreciation < 40)){ 
+		
 			return "appreciation moyenne";  
 		} 
 		else if(tauxAppreciation > 50){ 
 			return "très bonne appréciation";  
 		} 
-		return null; 
+		return "appreciation moyenne"; 
 	} 
 	 
 	int verifyExistence(List<String> liste, String message){ 

@@ -12,7 +12,7 @@ import tn.esprit.PIDEVMap.persistence.TchatMessages;
 public interface MessageServiceLocal { 
  
 	public int EnvoyerMessage(Message message,int userId); 
-	public void supprimerMessage(int id); 
+	public void supprimerMessage(int messageId); 
 	public void modifierMessage(int id); 
 	public List<TchatMessages> getAllMessage(int discussId); 
 	/*public List<Message> getMessagesBySender(); 

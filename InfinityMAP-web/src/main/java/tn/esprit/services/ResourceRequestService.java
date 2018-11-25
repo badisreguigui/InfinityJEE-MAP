@@ -19,10 +19,12 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import tn.esprit.PIDEVMap.persistence.ResourceRequest;
 import tn.esprit.PIDEVMap.services.ResourceRequestServiceLocal;
+import tn.esprit.filters.Secured;
 
 
 @Path("/ResourceRequestService")
@@ -37,13 +39,24 @@ public class ResourceRequestService {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("/addResourceRequest/{idProjet}")
-	public String ajouterResourceRequest(ResourceRequest ressourceRequest,@PathParam(value="idProjet") int idProjet)
+	@Path("/addResourceRequest")
+	public String ajouterResourceRequest(ResourceRequest ressourceRequest,@QueryParam(value="idProjet") int idProjet,@QueryParam(value="idClient") int idClient)
 	{
-	    resourceRequestService.ajouterResourceRequest(ressourceRequest,idProjet);
+		
+	    resourceRequestService.ajouterResourceRequest(ressourceRequest,idProjet,idClient);
 	    return " Add Succeded";
 	}
-
+	
+	/*@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/addResourceRequest")
+	public String ajouterResourceRequest(ResourceRequest ressourceRequest)
+	{
+	    resourceRequestService.ajouterResourceRequest2(ressourceRequest);
+	    return " Add Succeded";
+	}
+*/
 
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
@@ -63,7 +76,7 @@ public class ResourceRequestService {
 		
 	}
 
-	@POST
+	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/getResourceRequest")
 	public List<ResourceRequest> getAllResourceRequest()	
@@ -71,7 +84,7 @@ public class ResourceRequestService {
 		return resourceRequestService.getAllResourceRequest();
 	}
 
-
+	@Secured
 	public void TraiterResourceRequest() {
 		// TODO Auto-generated method stub
 		

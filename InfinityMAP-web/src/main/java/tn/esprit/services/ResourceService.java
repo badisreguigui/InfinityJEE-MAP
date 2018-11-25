@@ -80,13 +80,14 @@ public class ResourceService  {
 		
 	}
 	
-	@POST
+	@GET
 	@javax.ws.rs.Produces(MediaType.APPLICATION_JSON)
 	@Path("/filterResources")
 	public Set<Resource> FilterResourceByName(@QueryParam(value="lastname") String name,@QueryParam(value="firstname") String firstname
 			,@QueryParam(value="seniority") int seniority,@QueryParam(value="sector") String sector
 			,@QueryParam(value="profil") String profil,@QueryParam(value="contractype") String contractype,
 			@QueryParam(value="state") String state,@QueryParam(value="region") String region){
+		System.out.println();
 		return ResourceServiceLocal.FilterByName(name,firstname,seniority,sector,profil,contractype,state,region);
 	}
 

@@ -8,6 +8,8 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
@@ -16,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  */
 @Entity
+@JsonIgnoreProperties({ "client", "listResources","ressource" })
 public class Projet implements Serializable {
 
 	   
@@ -25,6 +28,7 @@ public class Projet implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	
 	private int id;
 	private TypeProjet statut;
 
@@ -44,7 +48,7 @@ public class Projet implements Serializable {
 	@JsonIgnore
 	private Client client;
 	
-	@ManyToMany
+	@OneToMany(mappedBy="projet")
 	@JsonIgnore
 	private List<Resource> listResources;
 
@@ -53,7 +57,8 @@ public class Projet implements Serializable {
 	private List<Skills> listSkills;
 	
 	@OneToMany(mappedBy="project")
-private List<ResourceRequest>resourceRequest;
+	@JsonIgnore
+	private List<ResourceRequest>resourceRequest;
 
 	@JsonProperty("projetStartDate")
 	@Temporal(TemporalType.DATE)
@@ -64,10 +69,7 @@ private List<ResourceRequest>resourceRequest;
 	private Date projetEndDate;
 
 	
-	@ManyToOne
-	//@JsonProperty("listResourcess")
-	@JsonBackReference(value="projet")
-	private Resource ressource;
+
 	
 	
 	public List<ResourceRequest> getResourceRequest() {
@@ -126,12 +128,7 @@ private List<ResourceRequest>resourceRequest;
 	public void setProjetEndDate(Date projetEndDate) {
 		this.projetEndDate = projetEndDate;}
 
-	public Resource getRessource() {
-		return ressource;
-	}
-	public void setRessource(Resource ressource) {
-		this.ressource = ressource;
-	}
+
 	public String getNom() {
 		return nom;
 	}

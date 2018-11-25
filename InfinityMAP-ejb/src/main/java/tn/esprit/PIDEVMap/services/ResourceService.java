@@ -50,7 +50,7 @@ public class ResourceService implements ResourceServiceLocale  {
 		r.setRating(0);
 		r.setState(State.Available);
 		r.setListMandats(null);
-		r.setListProjets(null);
+		r.setProjet(null);
 		r.setListSkills(null);
 		em.persist(r);
 		return r.getId();
@@ -318,7 +318,7 @@ public class ResourceService implements ResourceServiceLocale  {
 			
 		}
 		Projet s = em.find(Projet.class, projetId);
-		s.setRessource(em.find(Resource.class, resourceId));
+		//s.setRessource(em.find(Resource.class, resourceId));
 		
 		
 	}
