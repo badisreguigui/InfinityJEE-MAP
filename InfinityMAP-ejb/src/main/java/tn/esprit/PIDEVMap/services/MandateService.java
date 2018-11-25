@@ -64,13 +64,30 @@ public class MandateService implements MandateServiceRemote {
 
 	@Override
 	public String affecterMandateAResource(int requestId) {
+		TypedQuery<Mandate> query2= em.createQuery("select  m from Mandate m", Mandate.class);
+		for(Mandate mandat:query2.getResultList())
+		{
+			if(mandat.getRequest().getRequestId()==requestId)
+				return "cette mandat est déja prise par "+mandat.getResource().getFirstname();
+		}
 		double minValue=0;
-		
+		Resource r=new Resource();
 		ResourceRequest request = em.find(ResourceRequest.class, requestId);
 		String profil = request.getSearchedProfile();
 		TypedQuery<Resource> query = em.createQuery("SELECT e FROM Resource e where e.profil=:profil  and e.yearsOfExperience=:years ", Resource.class)
 	    .setParameter("profil", profil).setParameter("years",request.getYearsOfExperience());
-	Resource r = query.getSingleResult();
+		 List<Resource>resources= query.getResultList();
+		for(Resource r1:resources){
+			double distance=GPS(r1.getId(),request.getProject().getClient().getId());
+			if(distance>minValue)
+			 r=r1;
+		 }
+		
+
+		
+	    for(Vacation v :r.getVacation()){
+	    	if(v.getDateDebut().compareTo(request.getProject().getProjetEndDate())>0 || v.getDateFin().compareTo(request.getProject().getProjetStartDate())<0)
+	    			{
 		Mandate mandat = new Mandate();
 		mandat.setNomMandat(request.getTitle());
 		mandat.setFacture(0);
@@ -80,7 +97,7 @@ public class MandateService implements MandateServiceRemote {
 		mandat.setResource(r);
 		Set<Mandate> mandates = new HashSet();
 		mandates.add(mandat);
-		//r.setListMandats(mandates);
+		r.setListMandats(mandates);
 		request.setListMandats(mandates);
 		HistoriqueAssignationMandat historique = new HistoriqueAssignationMandat();
 		historique.setHeureSauvegarde(Calendar.getInstance().getTime());
@@ -90,7 +107,9 @@ public class MandateService implements MandateServiceRemote {
 		mandat.setHistorique(historique);
 		em.persist(historique);
 		return "affectation mandat"+mandat.toString()+" reussite pour"+r.toString();
-	    
+	    	} }
+	return "la resource n'est pas disponible";
+
 
 
 	}

@@ -103,7 +103,7 @@ public class MandateService {
 	{
 		return mandate.calculTotalMandat(resourceId);
 	}
-
+@Secured
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("calculDistance")

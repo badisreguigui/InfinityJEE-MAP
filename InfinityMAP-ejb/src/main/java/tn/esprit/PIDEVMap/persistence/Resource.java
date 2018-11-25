@@ -153,6 +153,7 @@ public void setUser(User user) {
 	public Set<Mandate> getListMandats() {
 		return ListMandats;
 	}
+	
 
 
 	public void setListMandats(Set<Mandate> ListMandats) {
